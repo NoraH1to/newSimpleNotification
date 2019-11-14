@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_todoitem"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardElevation="0dp"
+    app:cardCornerRadius="0dp"
+    android:clickable="true"
+    android:focusable="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/text_todoitem_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="123123123"
+            android:textColor="#000000"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout="@+id/checkbox_todoitem"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBaseline_toBaselineOf="@+id/checkbox_todoitem"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/checkbox_todoitem" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/text_todoitem_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:text="123123123"
+            android:textColor="@color/color_primary"
+            android:textSize="16sp"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/checkbox_todoitem"
+            app:layout_constraintStart_toEndOf="@+id/checkbox_todoitem"
+            app:layout_constraintTop_toBottomOf="@+id/text_todoitem_content" />
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/checkbox_todoitem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:padding="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginTop="16dp"
+            android:background="@color/colorGrey"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_todoitem_date" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

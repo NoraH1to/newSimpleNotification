@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/list_main"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="56dp"
+            android:overScrollMode="never" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/bottom_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        app:elevation="8dp"
+        app:fabAlignmentMode="end"
+        app:fabAnimationMode="scale"
+        app:fabCradleMargin="8dp"
+        app:menu="@menu/main_bottom_app_bar_menu"
+        app:layout_behavior="com.google.android.material.bottomappbar.BottomAppBar$Behavior">
+
+    </com.google.android.material.bottomappbar.BottomAppBar>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_anchor="@id/bottom_bar"
+        app:srcCompat="@drawable/ic_add_black_24dp"
+        app:hideMotionSpec="@anim/bottom_sheet_slide_in"/>
+
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
