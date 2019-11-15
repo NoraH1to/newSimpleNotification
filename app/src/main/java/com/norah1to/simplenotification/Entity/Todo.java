@@ -6,7 +6,9 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Entity(tableName = "todo_table")
@@ -14,33 +16,83 @@ public class Todo implements Serializable {
 
     public static final String TAG = "TODO_OBJ";
 
+    /**
+     * 删除状态
+     */
+    public static final int STATE_DELETED = 1;
+    public static final int STATE_NOT_DELETED = 0;
+
+    /**
+     *  优先级
+     */
+    public static final int PROIORITY_HIGH = 150;
+    public static final int PROIORITY_MID = 100;
+    public static final int PROIORITY_LOW = 50;
+
+
     public Todo() {
-        this.uuid = UUID.randomUUID().toString();
-        this.finish = false;
+        this.todoID = UUID.randomUUID().toString();
+        this.deleted = this.STATE_NOT_DELETED;
+        this.tags = new ArrayList<String>();
     }
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     private int id;
 
-    @NonNull
-    @ColumnInfo(name = "uuid")
-    private String uuid;
+    /**
+     * 下面的内容是跟云端数据库对应的
+     */
 
+    // 待做的专属 ID
+    @NonNull
+    @ColumnInfo(name = "todo_id")
+    private String todoID;
+
+    // 用户的 ID
+    @NonNull
+    @ColumnInfo(name = "user_id")
+    private String userID;
+
+    // 待做的内容
     @NonNull
     @ColumnInfo(name = "content")
     private String content;
 
-    @ColumnInfo(name = "date")
-    private Date date;
+    // 提醒的时间
+    @ColumnInfo(name = "notice_time")
+    private Date noticeTime;
 
+    // 创建的时间
     @NonNull
-    @ColumnInfo(name = "create_date")
-    private Date createDate;
+    @ColumnInfo(name = "created_time")
+    private Date createTime;
 
+    // 完成的时间
+    @ColumnInfo(name = "completed_time")
+    private Date completedTime;
+
+    // 最后修改的时间
+    @ColumnInfo(name = "modified_time")
+    private Date modifiedTime;
+
+    // 删除状态
+    @ColumnInfo(name = "deleted")
+    private int deleted;
+
+    // 优先级
     @NonNull
-    @ColumnInfo(name = "finish")
-    private boolean finish;
+    @ColumnInfo(name = "priority")
+    private int priority;
+
+    // 标签
+    @NonNull
+    @ColumnInfo(name = "tags")
+    private List<String> tags;
+
+    // 排序用字段
+    @ColumnInfo(name = "sort_order")
+    private long sortOrder;
 
     public int getId() {
         return id;
@@ -50,45 +102,96 @@ public class Todo implements Serializable {
         this.id = id;
     }
 
+    @NonNull
+    public String getTodoID() {
+        return todoID;
+    }
+
+    public void setTodoID(@NonNull String todoID) {
+        this.todoID = todoID;
+    }
+
+    @NonNull
+    public String getUserID() {
+        return userID;
+    }
+
+    public void setUserID(@NonNull String userID) {
+        this.userID = userID;
+    }
+
+    @NonNull
     public String getContent() {
         return content;
     }
 
-    public void setContent(String content) {
+    public void setContent(@NonNull String content) {
         this.content = content;
     }
 
-    public Date getDate() {
-        return date;
+    public Date getNoticeTime() {
+        return noticeTime;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    @NonNull
-    public String getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(@NonNull String uuid) {
-        this.uuid = uuid;
+    public void setNoticeTime(Date noticeTime) {
+        this.noticeTime = noticeTime;
     }
 
     @NonNull
-    public Date getCreateDate() {
-        return createDate;
+    public Date getCreateTime() {
+        return createTime;
     }
 
-    public void setCreateDate(@NonNull Date createDate) {
-        this.createDate = createDate;
+    public void setCreateTime(@NonNull Date createTime) {
+        this.createTime = createTime;
     }
 
-    public boolean isFinish() {
-        return finish;
+    public Date getCompletedTime() {
+        return completedTime;
     }
 
-    public void setFinish(boolean finish) {
-        this.finish = finish;
+    public void setCompletedTime(Date completedTime) {
+        this.completedTime = completedTime;
+    }
+
+    public Date getModifiedTime() {
+        return modifiedTime;
+    }
+
+    public void setModifiedTime(Date modifiedTime) {
+        this.modifiedTime = modifiedTime;
+    }
+
+    public int getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(int deleted) {
+        this.deleted = deleted;
+    }
+
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
+    }
+
+    @NonNull
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(@NonNull List<String> tags) {
+        this.tags = tags;
+    }
+
+    public long getSortOrder() {
+        return sortOrder;
+    }
+
+    public void setSortOrder(long sortOrder) {
+        this.sortOrder = sortOrder;
     }
 }

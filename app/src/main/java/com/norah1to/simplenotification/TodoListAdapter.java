@@ -53,7 +53,7 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoVi
         if (mTodos != null) {
             Todo current = mTodos.get(position);
             holder.contentView.setText(current.getContent());
-            holder.dateView.setText(DateUtil.formDatestr(current.getDate()));
+            holder.dateView.setText(DateUtil.formDatestr(current.getNoticeTime()));
             // todo：跳转到编辑页面
             holder.cardView.setOnClickListener(v -> {
                 Intent intent = new Intent(holder.itemView.getContext(), MakeTodoActivity.class);

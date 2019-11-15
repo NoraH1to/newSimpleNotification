@@ -28,7 +28,7 @@ public interface TodoDao {
     void deleteTodos(Todo[] todos);
     // TODO: maybe not work
 
-    @Query("SELECT * FROM todo_table ORDER BY create_date DESC")
+    @Query("SELECT * FROM todo_table ORDER BY created_time")
     LiveData<List<Todo>> getAllTodos();
 
     @Update

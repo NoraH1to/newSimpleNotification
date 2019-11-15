@@ -72,7 +72,7 @@ public class MakeTodoActivity extends AppCompatActivity {
         makeTodoViewModel.getmData().observe(this, mData -> {
             // 更改显示的内容
             dateTextView.setText(DateUtil.formDatestr(mData));
-            todo.setDate(mData);
+            todo.setNoticeTime(mData);
         });
         // 监听 mTodo 的变化
         makeTodoViewModel.getmTodo().observe(this, mTodo -> {
@@ -142,8 +142,8 @@ public class MakeTodoActivity extends AppCompatActivity {
     // 创建或者更新一个 todoObj
     private void makeTodo() {
         todo.setContent(contentInput.getText().toString());
-        todo.setDate(makeTodoViewModel.getmData().getValue());
-        todo.setCreateDate(new Date());
+        todo.setNoticeTime(makeTodoViewModel.getmData().getValue());
+        todo.setCreateTime(new Date());
         todoViewModel.insert(todo);
         finish();
     }
