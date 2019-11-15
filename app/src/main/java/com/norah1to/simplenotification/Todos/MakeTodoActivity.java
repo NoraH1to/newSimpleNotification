@@ -62,16 +62,6 @@ public class MakeTodoActivity extends AppCompatActivity {
         // 初始化底栏
         bottomAppBar = (BottomAppBar)findViewById(R.id.bottom_bar_maketodo);
 
-
-        // 尝试接收外部传入的数据
-        // TODO: 1
-        Intent todoData = getIntent();
-        if (todoData != null) {
-            if (todoData.getSerializableExtra(Todo.TAG) != null) {
-                todo = (Todo)todoData.getSerializableExtra(Todo.TAG);
-            }
-        }
-
         if (todo == null) {
             todo = new Todo();
         }
@@ -84,6 +74,11 @@ public class MakeTodoActivity extends AppCompatActivity {
             dateTextView.setText(DateUtil.formDatestr(mData));
             todo.setDate(mData);
         });
+        // 监听 mTodo 的变化
+        makeTodoViewModel.getmTodo().observe(this, mTodo -> {
+            // 显示更改的内容
+            contentInput.setText(mTodo.getContent());
+        });
 
         // 获得 MainActivity 中的 viewModel
         if (MainActivity.mtodoViewModel != null) {
@@ -92,6 +87,16 @@ public class MakeTodoActivity extends AppCompatActivity {
             todoViewModel = new TodoViewModel(getApplication());
         }
 
+
+        // 尝试接收外部传入的数据
+        // TODO: 1
+        Intent todoData = getIntent();
+        if (todoData != null) {
+            if ((Todo)todoData.getSerializableExtra(Todo.TAG) != null) {
+                todo = (Todo)todoData.getSerializableExtra(Todo.TAG);
+                makeTodoViewModel.getmTodo().setValue(todo);
+            }
+        }
     }
 
     @SuppressLint("RestrictedApi")

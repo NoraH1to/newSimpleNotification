@@ -14,13 +14,15 @@ public class MakeTodoViewModel extends AndroidViewModel {
     private MutableLiveData<Todo> mTodo;
     private MutableLiveData<Date> mDate;
 
-    MakeTodoViewModel(Application application) {
+    public MakeTodoViewModel(Application application) {
         super(application);
+        mTodo = new MutableLiveData<Todo>();
+        mDate = new MutableLiveData<Date>();
     }
 
     public MutableLiveData<Todo> getmTodo() {
         if (mTodo == null) {
-            mTodo = new MutableLiveData<>();
+            mTodo = new MutableLiveData<Todo>();
         }
         return mTodo;
     }
