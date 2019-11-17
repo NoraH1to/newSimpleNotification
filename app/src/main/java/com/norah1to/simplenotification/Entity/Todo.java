@@ -23,6 +23,12 @@ public class Todo implements Serializable {
     public static final int STATE_NOT_DELETED = 0;
 
     /**
+     * 提醒状态
+     */
+    public static final int STATE_NOTICE = 1;
+    public static final int STATE_NOT_NOTICE = 0;
+
+    /**
      *  优先级
      */
     public static final int PROIORITY_HIGH = 150;
@@ -34,6 +40,20 @@ public class Todo implements Serializable {
         this.todoID = UUID.randomUUID().toString();
         this.deleted = this.STATE_NOT_DELETED;
         this.tags = new ArrayList<String>();
+        this.deleted = this.STATE_NOT_DELETED;
+        this.priority = this.PROIORITY_LOW;
+        this.notice = this.STATE_NOT_NOTICE;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.append("todoID: ").append(todoID)
+                .append("content: ").append(this.content);
+
+        return stringBuilder.toString();
     }
 
     @PrimaryKey(autoGenerate = true)
@@ -58,6 +78,10 @@ public class Todo implements Serializable {
     @NonNull
     @ColumnInfo(name = "content")
     private String content;
+
+    // 是否开启提醒
+    @ColumnInfo(name = "notice")
+    private int notice;
 
     // 提醒的时间
     @ColumnInfo(name = "notice_time")
@@ -135,6 +159,14 @@ public class Todo implements Serializable {
 
     public void setNoticeTime(Date noticeTime) {
         this.noticeTime = noticeTime;
+    }
+
+    public int getNotice() {
+        return notice;
+    }
+
+    public void setNotice(int notice) {
+        this.notice = notice;
     }
 
     @NonNull

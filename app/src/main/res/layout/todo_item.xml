@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_todoitem"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -37,12 +38,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
             android:text="123123123"
             android:textColor="@color/color_primary"
             android:textSize="16sp"
             app:layout_constrainedWidth="true"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/checkbox_todoitem"
             app:layout_constraintStart_toEndOf="@+id/checkbox_todoitem"
             app:layout_constraintTop_toBottomOf="@+id/text_todoitem_content" />
@@ -54,11 +53,12 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:padding="8dp"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/color_view_todoitem"
             app:layout_constraintTop_toTopOf="parent" />
 
 
         <View
+            android:id="@+id/line_todoitem"
             android:layout_width="match_parent"
             android:layout_height="1px"
             android:layout_marginTop="16dp"
@@ -66,6 +66,25 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_todoitem_date" />
+
+        <ImageView
+            android:id="@+id/img_todoitem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="3dp"
+            app:layout_constraintStart_toEndOf="@+id/text_todoitem_date"
+            app:layout_constraintTop_toTopOf="@+id/text_todoitem_date"
+            app:srcCompat="@drawable/ic_access_alarm_grey_16dp" />
+
+        <View
+            android:id="@+id/color_view_todoitem"
+            android:layout_width="8dp"
+            android:layout_height="0dp"
+            android:background="#868686"
+            app:layout_constraintBottom_toBottomOf="@id/line_todoitem"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

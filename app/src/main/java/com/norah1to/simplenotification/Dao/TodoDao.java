@@ -19,17 +19,19 @@ public interface TodoDao {
     void insert(Todo todo);
 
     @Query("DELETE FROM todo_table")
-    void deleteAll();
+    int deleteAll();
 
     @Delete
-    void deleteTodo(Todo todo);
+    int deleteTodo(Todo todo);
 
     @Delete
-    void deleteTodos(Todo[] todos);
-    // TODO: maybe not work
+    int deleteTodos(List<Todo> todos);
 
-    @Query("SELECT * FROM todo_table ORDER BY created_time")
+    @Query("SELECT * FROM todo_table ORDER BY sort_order DESC, created_time DESC")
     LiveData<List<Todo>> getAllTodos();
+
+    @Query("SELECT * FROM todo_table WHERE todo_id=:todoID")
+    Todo getTodo(String todoID);
 
     @Update
     void updateTodo(Todo... todos);

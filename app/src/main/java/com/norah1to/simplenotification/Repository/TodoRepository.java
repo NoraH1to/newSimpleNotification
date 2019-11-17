@@ -26,6 +26,13 @@ public class TodoRepository {
         return mAllTodos;
     }
 
+    public Todo getmTodoByID(String todoID) {
+        return mTodoDao.getTodo(todoID);
+    }
+
+    public int deleteTodo(Todo todo) {
+        return mTodoDao.deleteTodo(todo);
+    }
 
     public void insert (Todo todo) {
         new insertAsyncTask(mTodoDao).execute(todo);

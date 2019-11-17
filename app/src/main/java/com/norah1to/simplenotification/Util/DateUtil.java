@@ -18,7 +18,7 @@ public class DateUtil {
         }
 
         SimpleDateFormat sdf = new SimpleDateFormat(formatStr);
-        sdf.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
+//        sdf.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
         return sdf.format(date);
     }
 }
