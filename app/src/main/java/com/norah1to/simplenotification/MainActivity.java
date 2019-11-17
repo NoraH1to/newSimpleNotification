@@ -7,16 +7,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Button;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.norah1to.simplenotification.Entity.Todo;
 import com.norah1to.simplenotification.Settings.SettingsActivity;
-import com.norah1to.simplenotification.Todos.MakeTodoActivity;
 import com.norah1to.simplenotification.ViewModel.TodoViewModel;
-
-import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -41,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
         // 初始化 todos 的 viewModel，监听 todos，实时更新列表数据
         mtodoViewModel = ViewModelProviders.of(this).get(TodoViewModel.class);
         mtodoViewModel.getAllTodos().observe(this, todos -> {
-            // Update the cached copy of the words in the adapter.
             if (first){
                 adapter.setTodos(todos);
                 first = false;
@@ -51,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
                 adapter.addTodo(todos.get(0));
                 recyclerView.scrollToPosition(0);
             }
+//            adapter.setTodos(todos);
         });
 
 

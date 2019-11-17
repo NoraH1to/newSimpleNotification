@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".Todos.MakeTodoActivity"
+            android:name=".MakeTodoActivity"
             android:windowSoftInputMode="adjustResize">
         </activity>
         <activity

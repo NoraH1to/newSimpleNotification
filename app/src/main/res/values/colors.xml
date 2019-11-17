@@ -5,4 +5,8 @@
     <color name="colorAccent">#D81B60</color>
 
     <color name="colorGrey">#ACACAC</color>
+
+    <color name="colorPriorityPink">#FF3D81</color>
+    <color name="colorPriorityOrange">#FF9658</color>
+    <color name="colorPriorityGrey">#868686</color>
 </resources>

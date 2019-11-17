@@ -38,6 +38,7 @@ public class TodoViewModel extends AndroidViewModel {
 
     // 删除一条
     public void delete(Todo todo) {
+        mRepository.deleteTodo(todo);
         // TODO: deleteOne res
     }
 }
