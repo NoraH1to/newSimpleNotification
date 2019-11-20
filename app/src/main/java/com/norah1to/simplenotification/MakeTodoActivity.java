@@ -2,6 +2,7 @@ package com.norah1to.simplenotification;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.ActionMenuItemView;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -11,6 +12,8 @@ import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 
@@ -19,13 +22,16 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textview.MaterialTextView;
+import com.norah1to.simplenotification.Entity.Tag;
 import com.norah1to.simplenotification.Entity.Todo;
 import com.norah1to.simplenotification.Util.DateUtil;
 import com.norah1to.simplenotification.ViewModel.MakeTodoViewModel;
+import com.norah1to.simplenotification.ViewModel.TagViewModel;
 import com.norah1to.simplenotification.ViewModel.TodoViewModel;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class MakeTodoActivity extends AppCompatActivity {
 
@@ -33,6 +39,7 @@ public class MakeTodoActivity extends AppCompatActivity {
 
     private MakeTodoViewModel makeTodoViewModel;
     private TodoViewModel todoViewModel;
+    private TagViewModel tagViewModel;
 
     private DatePickerDialog datePickerDialog;
     private TimePickerDialog timePickerDialog;
@@ -69,6 +76,8 @@ public class MakeTodoActivity extends AppCompatActivity {
 
         // 初始化自己的 viewModel
         makeTodoViewModel = ViewModelProviders.of(this).get(MakeTodoViewModel.class);
+        // 初始化 mTags
+        makeTodoViewModel.setmTags();
         // 监听 mData 变化
         makeTodoViewModel.getmData().observe(this, mData -> {
             // 更改显示的内容
@@ -125,6 +134,14 @@ public class MakeTodoActivity extends AppCompatActivity {
         }
 
 
+        // 获得 TagActivity 中的 viewModel
+        if (TagActivity.tagViewModel != null) {
+            tagViewModel = TagActivity.tagViewModel;
+        } else {
+            tagViewModel = new TagViewModel(getApplication());
+        }
+
+
         // 如果是修改原有的，则根据 id 初始化内容
         Intent todoData = getIntent();
         if (todoData != null && todoData.getStringExtra(Todo.TAG) != null) {
@@ -165,7 +182,9 @@ public class MakeTodoActivity extends AppCompatActivity {
         // 监听 bottomBar 菜单点击
         bottomAppBar.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
-                // 设置时间的 pickerDialog
+                case R.id.menuitem_maketodo_tag:
+                    showTagPopmenu(bottomAppBar);
+                    return true;
                 case R.id.menuitem_maketodo_setdate:
                     showDatePickerDialog();
                     return true;
@@ -198,6 +217,23 @@ public class MakeTodoActivity extends AppCompatActivity {
         todo.setUserID("testID");
         todoViewModel.insert(todo);
         finish();
+    }
+
+
+    // 显示标签选择 popMenu
+    private void showTagPopmenu(View view) {
+        // TODO: 显示选择 tag 的 popMenu
+        PopupMenu popup = new PopupMenu(this, view);
+        Menu menu = popup.getMenu();
+        List<Tag> tagList = makeTodoViewModel.getmTags().getValue();
+        // 为空的时候不处理
+        if (tagList == null || tagList.size() == 0) {
+            return;
+        }
+        for (Tag tag : tagList) {
+            menu.add(tag.getName());
+        }
+        popup.show();
     }
 
 

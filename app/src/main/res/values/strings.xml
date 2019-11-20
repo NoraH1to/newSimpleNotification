@@ -3,6 +3,7 @@
     <string name="menu_main_search">搜索</string>
     <string name="menu_main_settings">设置</string>
     <string name="what_todo">准备做啥？</string>
+    <string name="menu_maketodo_settag">设置标签</string>
     <string name="menu_maketodo_setdate">设置提醒日期</string>
     <string name="menu_maketodo_settime">设置提醒时间</string>
     <string name="bottom_appbar_maketodo_title">无定时</string>
@@ -11,6 +12,7 @@
     <string name="prefix_text_maketodo_date">啥时候做：</string>
     <string name="menu_main_tags">标签管理</string>
     <string name="tag_tips">输入完后，点击回车添加标签</string>
+    <string name="tag_already_create">已经有该标签</string>
 
     <string name="title_activity_settings">Settings</string>
 

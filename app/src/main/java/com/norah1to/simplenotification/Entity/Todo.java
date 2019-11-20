@@ -40,7 +40,6 @@ public class Todo implements Serializable {
         this.todoID = UUID.randomUUID().toString();
         this.deleted = this.STATE_NOT_DELETED;
         this.tags = new ArrayList<String>();
-        this.deleted = this.STATE_NOT_DELETED;
         this.priority = this.PROIORITY_LOW;
         this.notice = this.STATE_NOT_NOTICE;
     }

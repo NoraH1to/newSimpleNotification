@@ -32,8 +32,20 @@ public class TagRepository {
         return mTagDao.deleteTag(tag);
     }
 
+    public int deleteTagByName(String name) {
+        return mTagDao.deleteTagByName(name);
+    }
+
     public void insert (Tag tag) {
         new TagRepository.insertAsyncTask(mTagDao).execute(tag);
+    }
+
+    public Tag getTag (String tagID) {
+        return mTagDao.getTag(tagID);
+    }
+
+    public Tag getTagByName (String name) {
+        return mTagDao.getTagByName(name);
     }
 
     // 异步操作数据库

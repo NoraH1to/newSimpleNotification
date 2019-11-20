@@ -1,10 +1,6 @@
 package com.norah1to.simplenotification;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-
 import android.graphics.BlurMaskFilter;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -14,6 +10,10 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
@@ -25,7 +25,7 @@ public class TagActivity extends AppCompatActivity {
 
     public static final String TAG = "TagActivity";
 
-    private TagViewModel tagViewModel;
+    public static TagViewModel tagViewModel;
 
     private ChipGroup tagGroup;
 
@@ -47,17 +47,36 @@ public class TagActivity extends AppCompatActivity {
         textInputEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if ((event != null && KeyEvent.KEYCODE_ENTER == event.getKeyCode() && KeyEvent.ACTION_DOWN == event.getAction())) {
+                // 监听输入时的回车键
+                if ((event != null && KeyEvent.KEYCODE_ENTER == event.getKeyCode() &&
+                        KeyEvent.ACTION_DOWN == event.getAction())) {
+                    // TODO: 插入 tag
+                    Tag tag = new Tag();
+                    tag.setName(v.getText().toString());
+                    tag.setUserID("testID"); // TODO: 替换成全局用户 ID
                     try {
+                        tagViewModel.insert(tag);
                         tagGroup.addView(createChip(v.getText().toString()));
                     } catch (Exception e) {
                         Log.d(TAG, "onEditorAction: " + e.toString());
                     }
-
+                    // 清空输入框
                     v.setText(null);
                     return true;
                 }
                 return false;
+            }
+        });
+
+
+        // 初始化 viewModel
+        tagViewModel = ViewModelProviders.of(this).get(TagViewModel.class);
+        // 监听所有 tag 的列表
+        tagViewModel.getmAllTags().observe(this, mAllTags -> {
+            // TODO: 监听 tags 列表变化
+            tagGroup.removeAllViews();
+            for (Tag tag : mAllTags) {
+                tagGroup.addView(createChip(tag.getName()));
             }
         });
     }
@@ -84,7 +103,15 @@ public class TagActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // TODO: 删除 tag
-                tagGroup.removeView(v);
+                try {
+                    Thread thread = new Thread(() -> {
+                        tagViewModel.deleteByName(((Chip) v).getText().toString());
+                    });
+                    thread.start();
+                    tagGroup.removeView(v);
+                } catch (Exception e) {
+                    Log.d(TAG, "onDeleteClick: " + e.toString());
+                }
             }
         });
         return chip;

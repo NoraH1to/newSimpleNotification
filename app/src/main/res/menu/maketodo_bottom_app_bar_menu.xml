@@ -2,6 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/menuitem_maketodo_tag"
+        android:title="@string/menu_maketodo_settag"
+        android:icon="@drawable/ic_tag_black_24dp"
+        app:showAsAction="always"/>
+    <item
         android:id="@+id/menuitem_maketodo_setdate"
         android:title="@string/menu_maketodo_setdate"
         android:icon="@drawable/ic_date_range_black_24dp"

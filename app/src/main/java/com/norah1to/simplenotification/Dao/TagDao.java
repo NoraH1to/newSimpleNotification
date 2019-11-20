@@ -9,7 +9,6 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 import com.norah1to.simplenotification.Entity.Tag;
-import com.norah1to.simplenotification.Entity.Todo;
 
 import java.util.List;
 
@@ -24,4 +23,13 @@ public interface TagDao {
 
     @Delete
     int deleteTag(Tag tag);
+
+    @Query("SELECT * FROM tag_table WHERE tag_id = :tagID")
+    Tag getTag(String tagID);
+
+    @Query("SELECT * FROM tag_table WHERE name = :name")
+    Tag getTagByName(String name);
+
+    @Query("DELETE FROM tag_table WHERE name = :name")
+    int deleteTagByName(String name);
 }
