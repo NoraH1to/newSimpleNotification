@@ -25,7 +25,9 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private TodoListAdapter adapter;
     private LinearLayoutManager linearLayoutManager;
+
     private BottomAppBar bottomAppBar;
+
     private FloatingActionButton fab;
 
     @Override

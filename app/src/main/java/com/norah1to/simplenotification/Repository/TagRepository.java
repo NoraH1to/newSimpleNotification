@@ -28,7 +28,7 @@ public class TagRepository {
         return mAllTags;
     }
 
-    public int deleteTodo(Tag tag) {
+    public int deleteTag(Tag tag) {
         return mTagDao.deleteTag(tag);
     }
 

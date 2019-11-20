@@ -27,7 +27,7 @@ public interface TodoDao {
     @Delete
     int deleteTodos(List<Todo> todos);
 
-    @Query("SELECT * FROM todo_table ORDER BY sort_order DESC, created_time DESC")
+    @Query("SELECT * FROM todo_table ORDER BY sort_order DESC, created_timestamp DESC")
     LiveData<List<Todo>> getAllTodos();
 
     @Query("SELECT * FROM todo_table WHERE todo_id=:todoID")

@@ -84,20 +84,20 @@ public class Todo implements Serializable {
     private int notice;
 
     // 提醒的时间
-    @ColumnInfo(name = "notice_time")
+    @ColumnInfo(name = "notice_timestamp")
     private Date noticeTime;
 
     // 创建的时间
     @NonNull
-    @ColumnInfo(name = "created_time")
+    @ColumnInfo(name = "created_timestamp")
     private Date createTime;
 
     // 完成的时间
-    @ColumnInfo(name = "completed_time")
+    @ColumnInfo(name = "completed_timestamp")
     private Date completedTime;
 
     // 最后修改的时间
-    @ColumnInfo(name = "modified_time")
+    @ColumnInfo(name = "modified_timestamp")
     private Date modifiedTime;
 
     // 删除状态
