@@ -9,6 +9,7 @@
     <string name="menu_maketodo_notice">提醒开关</string>
     <string name="menu_maketodo_priority">修改优先级</string>
     <string name="prefix_text_maketodo_date">啥时候做：</string>
+    <string name="menu_main_tags">标签管理</string>
 
     <string name="title_activity_settings">Settings</string>
 

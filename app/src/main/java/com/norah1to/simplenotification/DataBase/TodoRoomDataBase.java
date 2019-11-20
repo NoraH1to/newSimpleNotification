@@ -7,7 +7,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
-import com.norah1to.simplenotification.Converters;
+import com.norah1to.simplenotification.Converters.Converters;
 import com.norah1to.simplenotification.Dao.TodoDao;
 import com.norah1to.simplenotification.Entity.Todo;
 

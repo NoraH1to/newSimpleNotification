@@ -17,8 +17,11 @@ public class TodoRepository {
     private LiveData<List<Todo>> mAllTodos;
 
     public TodoRepository(Application application) {
+        // 获得 TodoRoom 的 db 对象
         TodoRoomDataBase db = TodoRoomDataBase.getDatabase(application);
+        // 从 db 中拿到 dao
         mTodoDao = db.todoDao();
+        // 拿到数据库中的所有数据
         mAllTodos = mTodoDao.getAllTodos();
     }
 
@@ -26,6 +29,7 @@ public class TodoRepository {
         return mAllTodos;
     }
 
+    // 根据 todoID 获得数据
     public Todo getmTodoByID(String todoID) {
         return mTodoDao.getTodo(todoID);
     }
@@ -38,6 +42,7 @@ public class TodoRepository {
         new insertAsyncTask(mTodoDao).execute(todo);
     }
 
+    // 异步操作数据库
     private static class insertAsyncTask extends AsyncTask<Todo, Void, Void> {
 
         private TodoDao mAsyncTaskDao;
@@ -48,6 +53,7 @@ public class TodoRepository {
 
         @Override
         protected Void doInBackground(final Todo... params) {
+            // 异步插入
             mAsyncTaskDao.insert(params[0]);
             return null;
         }

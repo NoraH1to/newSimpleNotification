@@ -79,7 +79,10 @@ public class MakeTodoActivity extends AppCompatActivity {
         // 监听 mTodo 的变化
         makeTodoViewModel.getmTodo().observe(this, mTodo -> {
             // 显示更改的内容
-            contentInput.setText(mTodo.getContent());
+            String tmpInputStr = contentInput.getText().toString();
+            if (tmpInputStr.equals("")) {
+                contentInput.setText(mTodo.getContent());
+            }
             // 更改通知图标
             ActionMenuItemView menuItemNotice =
                     (ActionMenuItemView) findViewById(R.id.menuitem_maketodo_notice);
