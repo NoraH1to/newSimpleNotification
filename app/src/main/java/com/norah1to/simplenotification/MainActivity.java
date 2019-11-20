@@ -10,6 +10,7 @@ import android.os.Bundle;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.norah1to.simplenotification.Adapter.TodoListAdapter;
 import com.norah1to.simplenotification.Settings.SettingsActivity;
 import com.norah1to.simplenotification.ViewModel.TodoViewModel;
 
@@ -82,6 +83,11 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.bottom_app_bar_menu_settings:
                     Intent intent = new Intent(this, SettingsActivity.class);
                     startActivity(intent);
+                    return true;
+                case R.id.bottom_app_bar_menu_tags:
+                    // TODO: 跳转到标签管理
+                    Intent intent1 = new Intent(this, TagActivity.class);
+                    startActivity(intent1);
                     return true;
                 default:
                     return false;
