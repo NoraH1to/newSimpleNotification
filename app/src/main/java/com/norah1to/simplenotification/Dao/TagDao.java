@@ -21,6 +21,9 @@ public interface TagDao {
     @Query("SELECT * FROM tag_table")
     LiveData<List<Tag>> getAllTags();
 
+    @Query("SELECT * FROM tag_table")
+    List<Tag> getAllTagsRaw();
+
     @Delete
     int deleteTag(Tag tag);
 

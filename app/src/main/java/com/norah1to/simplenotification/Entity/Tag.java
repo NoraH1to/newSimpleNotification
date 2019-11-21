@@ -1,6 +1,7 @@
 package com.norah1to.simplenotification.Entity;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Index;
@@ -18,6 +19,25 @@ public class Tag {
         // TODO: tag构造方法
         this.tagID = UUID.randomUUID().toString();
         this.visible = this.STATE_VISIBLE;
+    }
+
+    @Override
+    public int hashCode() {
+        return this.name.hashCode();
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        try {
+            Tag tag = (Tag)obj;
+            if (tag.getName().equals(this.name)) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     @PrimaryKey(autoGenerate = true)

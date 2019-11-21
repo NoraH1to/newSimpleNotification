@@ -10,8 +10,11 @@ import com.norah1to.simplenotification.Entity.Todo;
 import com.norah1to.simplenotification.Repository.TagRepository;
 import com.norah1to.simplenotification.Repository.TodoRepository;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class MakeTodoViewModel extends AndroidViewModel {
 
@@ -21,6 +24,7 @@ public class MakeTodoViewModel extends AndroidViewModel {
     private MutableLiveData<Todo> mTodo;
     private MutableLiveData<Date> mDate;
     private MutableLiveData<List<Tag>> mTags;
+    private MutableLiveData<Set<Tag>> mAddTags;
 
     public MakeTodoViewModel(Application application) {
         super(application);
@@ -29,6 +33,8 @@ public class MakeTodoViewModel extends AndroidViewModel {
         mTags = new MutableLiveData<List<Tag>>();
         mTodo = new MutableLiveData<Todo>();
         mDate = new MutableLiveData<Date>();
+        mAddTags = new MutableLiveData<Set<Tag>>();
+        mAddTags.postValue(new HashSet<Tag>());
     }
 
     public void setmTodo(String todoID) {
@@ -37,10 +43,11 @@ public class MakeTodoViewModel extends AndroidViewModel {
             return;
         mTodo.postValue(tmpTodo);
         mDate.postValue(tmpTodo.getNoticeTime());
+        mAddTags.postValue(new HashSet<Tag>(tmpTodo.getTags()));
     }
 
     public void setmTags() {
-        mTags.postValue(mtagRepository.getmAllTags().getValue());
+        mTags.postValue(mtagRepository.getAllTagsRaw());
     }
 
     public MutableLiveData<Todo> getmTodo() {
@@ -53,5 +60,9 @@ public class MakeTodoViewModel extends AndroidViewModel {
 
     public MutableLiveData<List<Tag>> getmTags() {
         return mTags;
+    }
+
+    public MutableLiveData<Set<Tag>> getmAddTags() {
+        return mAddTags;
     }
 }

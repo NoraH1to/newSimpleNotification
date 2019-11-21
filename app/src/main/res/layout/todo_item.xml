@@ -77,6 +77,23 @@
             app:layout_constraintTop_toTopOf="@+id/text_todoitem_date"
             app:srcCompat="@drawable/ic_access_alarm_grey_16dp" />
 
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/text_todoitem_tags"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:text="tags"
+            android:textSize="16sp"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/checkbox_todoitem"
+            app:layout_constraintStart_toEndOf="@+id/img_todoitem"
+            app:layout_constraintTop_toBottomOf="@+id/text_todoitem_content" />
+
         <View
             android:id="@+id/color_view_todoitem"
             android:layout_width="8dp"

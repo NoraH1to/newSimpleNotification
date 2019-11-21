@@ -28,6 +28,10 @@ public class TagRepository {
         return mAllTags;
     }
 
+    public List<Tag> getAllTagsRaw() {
+        return mTagDao.getAllTagsRaw();
+    }
+
     public int deleteTag(Tag tag) {
         return mTagDao.deleteTag(tag);
     }

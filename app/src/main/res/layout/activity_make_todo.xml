@@ -11,25 +11,25 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:focusable="true"
-        android:focusableInTouchMode="true">
+        app:layout_constraintTop_toBottomOf="@+id/text_maketodo_date">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/text_maketodo_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="24sp"
             android:background="#00FFFFFF"
-            android:hint="@string/what_todo" />
+            android:hint="@string/what_todo"
+            android:textSize="24sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/text_maketodo_date"
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chip_group_maketodo_tagGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -40,6 +40,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/text_maketodo_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:gravity="center"
+        android:text="@string/bottom_appbar_maketodo_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

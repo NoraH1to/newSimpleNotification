@@ -2,6 +2,14 @@ package com.norah1to.simplenotification.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BlurMaskFilter;
+import android.graphics.Typeface;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.style.BackgroundColorSpan;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textview.MaterialTextView;
+import com.norah1to.simplenotification.Entity.Tag;
 import com.norah1to.simplenotification.Entity.Todo;
 import com.norah1to.simplenotification.MakeTodoActivity;
 import com.norah1to.simplenotification.R;
@@ -36,6 +45,8 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoVi
         private final ImageView alarmImgView;
         // 优先级强调色
         private final View priorityColorView;
+        // 标签显示
+        private final MaterialTextView tagsView;
 
         private TodoViewHolder (View itemView) {
             super(itemView);
@@ -44,6 +55,7 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoVi
             cardView = itemView.findViewById(R.id.card_todoitem);
             alarmImgView = itemView.findViewById(R.id.img_todoitem);
             priorityColorView = itemView.findViewById(R.id.color_view_todoitem);
+            tagsView = itemView.findViewById(R.id.text_todoitem_tags);
         }
     }
 
@@ -107,10 +119,53 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoVi
 
             // 设置提醒图标是否展示
             if (current.getNotice() == Todo.STATE_NOT_NOTICE) {
-                holder.alarmImgView.setVisibility(View.INVISIBLE);
+                holder.alarmImgView.setVisibility(View.GONE);
             } else {
                 holder.alarmImgView.setVisibility(View.VISIBLE);
             }
+
+            // 设置 tags 显示
+            SpannableStringBuilder spannableString = new SpannableStringBuilder();
+            int endIndex = 0;
+            for (Tag tag : current.getTags()) {
+                String text = tag.getName();
+                spannableString.append(' ');
+                spannableString.append(text);
+                spannableString.append(' ');
+
+                // 设置背景色
+                BackgroundColorSpan backgroundColorSpan = new BackgroundColorSpan(
+                        ContextCompat.getColor(holder.itemView.getContext(),
+                                R.color.color_secondary)
+                );
+                spannableString.setSpan(
+                        backgroundColorSpan,
+                        endIndex,
+                        endIndex + text.length() + 2,
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+                // 设置文字颜色
+                ForegroundColorSpan colorSpan = new ForegroundColorSpan(
+                        ContextCompat.getColor(holder.itemView.getContext(), android.R.color.black)
+                );
+                spannableString.setSpan(
+                        colorSpan,
+                        endIndex,
+                        endIndex + text.length() + 2,
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+                // 设置斜体
+                StyleSpan styleSpan = new StyleSpan(Typeface.ITALIC);
+                spannableString.setSpan(
+                        styleSpan,
+                        endIndex,
+                        endIndex + text.length() + 2,
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+                spannableString.append(" ");
+                endIndex += text.length() + 3;
+            }
+            holder.tagsView.setText(spannableString);
         } else {
             holder.contentView.setText("No todo");
             holder.dateView.setText("No date");

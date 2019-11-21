@@ -3,6 +3,9 @@ package com.norah1to.simplenotification.Converters;
 
 import androidx.room.TypeConverter;
 
+import com.alibaba.fastjson.JSON;
+import com.norah1to.simplenotification.Entity.Tag;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,15 +22,12 @@ public class Converters {
     }
 
     @TypeConverter
-    public static String TaglistToTagjson(List<String> tagList) {
-        // TODO: list to json
-        return "";
+    public static String TaglistToTagjson(List<Tag> tagList) {
+        return JSON.toJSONString(tagList);
     }
 
     @TypeConverter
-    public static List<String> TagjsonToTaglist(String tagJson) {
-        List<String> result = new ArrayList<String>();
-        // TODO: json to list
-        return result;
+    public static List<Tag> TagjsonToTaglist(String tagJson) {
+        return JSON.parseArray(tagJson, Tag.class);
     }
 }

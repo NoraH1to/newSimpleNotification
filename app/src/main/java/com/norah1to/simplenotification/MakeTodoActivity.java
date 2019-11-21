@@ -12,26 +12,35 @@ import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textview.MaterialTextView;
 import com.norah1to.simplenotification.Entity.Tag;
 import com.norah1to.simplenotification.Entity.Todo;
+import com.norah1to.simplenotification.Util.ChipUtil;
 import com.norah1to.simplenotification.Util.DateUtil;
 import com.norah1to.simplenotification.ViewModel.MakeTodoViewModel;
 import com.norah1to.simplenotification.ViewModel.TagViewModel;
 import com.norah1to.simplenotification.ViewModel.TodoViewModel;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class MakeTodoActivity extends AppCompatActivity {
 
@@ -51,6 +60,8 @@ public class MakeTodoActivity extends AppCompatActivity {
     private MaterialTextView dateTextView;
 
     private BottomAppBar bottomAppBar;
+
+    private ChipGroup tagGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,10 +85,16 @@ public class MakeTodoActivity extends AppCompatActivity {
         bottomAppBar = (BottomAppBar)findViewById(R.id.bottom_bar_maketodo);
 
 
+        // 初始化 tagGroup
+        tagGroup = (ChipGroup)findViewById(R.id.chip_group_maketodo_tagGroup);
+
+
         // 初始化自己的 viewModel
         makeTodoViewModel = ViewModelProviders.of(this).get(MakeTodoViewModel.class);
         // 初始化 mTags
-        makeTodoViewModel.setmTags();
+        new Thread(() -> {
+            makeTodoViewModel.setmTags();
+        }).start();
         // 监听 mData 变化
         makeTodoViewModel.getmData().observe(this, mData -> {
             // 更改显示的内容
@@ -85,12 +102,25 @@ public class MakeTodoActivity extends AppCompatActivity {
                     append(getResources().getString(R.string.prefix_text_maketodo_date)).
                     append(DateUtil.formDatestr(mData)).toString());
         });
+        // 监听添加的 tags 变化
+        makeTodoViewModel.getmAddTags().observe(this, mAddTags -> {
+            tagGroup.removeAllViews();
+            for (Tag tag : mAddTags) {
+                tagGroup.addView(ChipUtil.createChip(this, tag.getName(), getMenuCloseListener()));
+            }
+//            new Thread(() -> {
+//                Todo tmpTodo = makeTodoViewModel.getmTodo().getValue();
+//                tmpTodo.setTags(new ArrayList<Tag>(mAddTags));
+//                makeTodoViewModel.getmTodo().postValue(tmpTodo);
+//            }).start();
+        });
         // 监听 mTodo 的变化
         makeTodoViewModel.getmTodo().observe(this, mTodo -> {
             // 显示更改的内容
             String tmpInputStr = contentInput.getText().toString();
             if (tmpInputStr.equals("")) {
                 contentInput.setText(mTodo.getContent());
+                contentInput.selectAll();
             }
             // 更改通知图标
             ActionMenuItemView menuItemNotice =
@@ -212,6 +242,7 @@ public class MakeTodoActivity extends AppCompatActivity {
         }
         todo.setContent(contentInput.getText().toString());
         todo.setNoticeTime(makeTodoViewModel.getmData().getValue());
+        todo.setTags(new ArrayList<Tag>(makeTodoViewModel.getmAddTags().getValue()));
         if (todo.getCreateTime() == null)
             todo.setCreateTime(new Date());
         todo.setUserID("testID");
@@ -222,7 +253,6 @@ public class MakeTodoActivity extends AppCompatActivity {
 
     // 显示标签选择 popMenu
     private void showTagPopmenu(View view) {
-        // TODO: 显示选择 tag 的 popMenu
         PopupMenu popup = new PopupMenu(this, view);
         Menu menu = popup.getMenu();
         List<Tag> tagList = makeTodoViewModel.getmTags().getValue();
@@ -233,22 +263,44 @@ public class MakeTodoActivity extends AppCompatActivity {
         for (Tag tag : tagList) {
             menu.add(tag.getName());
         }
+        // 监听点击
+        popup.setOnMenuItemClickListener(item -> {
+            tagGroup.addView(ChipUtil.createChip(this, item.getTitle().toString(), getMenuCloseListener()));
+            Set<Tag> tmpSet = makeTodoViewModel.getmAddTags().getValue();
+            Tag tmpTag = new Tag();
+            tmpTag.setName(item.getTitle().toString());
+            tmpSet.add(tmpTag);
+            makeTodoViewModel.getmAddTags().setValue(tmpSet);
+            return true;
+        });
         popup.show();
+    }
+
+    private View.OnClickListener getMenuCloseListener() {
+        return v -> {
+            Tag delTag = new Tag();
+            delTag.setName(((Chip)v).getText().toString());
+            try {
+                Set<Tag> tmpSet = makeTodoViewModel.getmAddTags().getValue();
+                tmpSet.remove(delTag);
+                Log.d(TAG, "getMenuCloseListener: " + tmpSet.size());
+                makeTodoViewModel.getmAddTags().postValue(tmpSet);
+            } catch (Exception e) {
+                Log.e(TAG, "showTagPopmenu: ", e);
+            }
+        };
     }
 
 
     // 显示一个日期选择器
     private void showDatePickerDialog() {
         Date tmpDate = makeTodoViewModel.getmData().getValue();
-        datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener(){
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                tmpDate.setYear(year - 1900);
-                tmpDate.setMonth(month);
-                tmpDate.setDate(dayOfMonth);
-                makeTodoViewModel.getmData().setValue(tmpDate);
-            }
-        }, tmpDate.getYear() + 1900, tmpDate.getMonth(), tmpDate.getDate());
+        datePickerDialog = new DatePickerDialog(this, ((view, year, month, dayOfMonth) -> {
+            tmpDate.setYear(year - 1900);
+            tmpDate.setMonth(month);
+            tmpDate.setDate(dayOfMonth);
+            makeTodoViewModel.getmData().setValue(tmpDate);
+        }), tmpDate.getYear() + 1900, tmpDate.getMonth(), tmpDate.getDate());
         datePickerDialog.show();
     }
 
@@ -256,14 +308,11 @@ public class MakeTodoActivity extends AppCompatActivity {
     // 显示一个时间选择器
     private void showTimePickerDialog() {
         Date tmpDate = makeTodoViewModel.getmData().getValue();
-        timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                tmpDate.setHours(hourOfDay);
-                tmpDate.setMinutes(minute);
-                makeTodoViewModel.getmData().setValue(tmpDate);
-            }
-        }, tmpDate.getHours(), tmpDate.getMinutes(), false);
+        timePickerDialog = new TimePickerDialog(this, ((view, hourOfDay, minute) -> {
+            tmpDate.setHours(hourOfDay);
+            tmpDate.setMinutes(minute);
+            makeTodoViewModel.getmData().setValue(tmpDate);
+        }), tmpDate.getHours(), tmpDate.getMinutes(), false);
         timePickerDialog.show();
     }
 
@@ -283,14 +332,11 @@ public class MakeTodoActivity extends AppCompatActivity {
         int selectedIndex = 3 - tmpTodo.getPriority() / 50;
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
         CharSequence[] characters = {"高", "中", "低"};
-        builder.setSingleChoiceItems(characters, selectedIndex, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                tmpTodo.setPriority((3 - which) * 50);
-                makeTodoViewModel.getmTodo().setValue(tmpTodo);
-                dialog.dismiss();
-            }
-        });
+        builder.setSingleChoiceItems(characters, selectedIndex, ((dialog, which) -> {
+            tmpTodo.setPriority((3 - which) * 50);
+            makeTodoViewModel.getmTodo().setValue(tmpTodo);
+            dialog.dismiss();
+        }));
         builder.create().show();
     }
 }

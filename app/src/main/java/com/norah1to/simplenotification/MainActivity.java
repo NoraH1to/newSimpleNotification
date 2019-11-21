@@ -87,7 +87,6 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
                     return true;
                 case R.id.bottom_app_bar_menu_tags:
-                    // TODO: 跳转到标签管理
                     Intent intent1 = new Intent(this, TagActivity.class);
                     startActivity(intent1);
                     return true;

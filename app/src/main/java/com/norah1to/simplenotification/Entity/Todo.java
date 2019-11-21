@@ -39,7 +39,7 @@ public class Todo implements Serializable {
     public Todo() {
         this.todoID = UUID.randomUUID().toString();
         this.deleted = this.STATE_NOT_DELETED;
-        this.tags = new ArrayList<String>();
+        this.tags = new ArrayList<Tag>();
         this.priority = this.PROIORITY_LOW;
         this.notice = this.STATE_NOT_NOTICE;
     }
@@ -111,7 +111,7 @@ public class Todo implements Serializable {
     // 标签
     @NonNull
     @ColumnInfo(name = "tags")
-    private List<String> tags;
+    private List<Tag> tags;
 
     // 排序用字段
     @ColumnInfo(name = "sort_order")
@@ -210,11 +210,11 @@ public class Todo implements Serializable {
     }
 
     @NonNull
-    public List<String> getTags() {
+    public List<Tag> getTags() {
         return tags;
     }
 
-    public void setTags(@NonNull List<String> tags) {
+    public void setTags(@NonNull List<Tag> tags) {
         this.tags = tags;
     }
 
