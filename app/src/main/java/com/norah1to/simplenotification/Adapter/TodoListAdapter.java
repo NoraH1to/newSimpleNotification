@@ -21,18 +21,40 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.checkbox.MaterialCheckBox;
+import com.google.android.material.radiobutton.MaterialRadioButton;
 import com.google.android.material.textview.MaterialTextView;
 import com.norah1to.simplenotification.Entity.Tag;
 import com.norah1to.simplenotification.Entity.Todo;
+import com.norah1to.simplenotification.MainActivity;
 import com.norah1to.simplenotification.MakeTodoActivity;
 import com.norah1to.simplenotification.R;
 import com.norah1to.simplenotification.Util.DateUtil;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoViewHolder> {
 
     private static final String TAG = "TodoListAdapter";
+
+    public static final int STATE_ACTION_MODE_ON = 1;
+    public static final int STATE_ACTION_MODE_OFF = 0;
+
+    // 代理
+    private Proxy mProxy;
+
+
+    // 模式
+    public int actionModeState = STATE_ACTION_MODE_OFF;
+
+
+    // 被选中的列表
+    private Set<Integer> selectIndexs = new HashSet<Integer>() {
+    };
+
 
     class TodoViewHolder extends  RecyclerView.ViewHolder {
         // 输入的内容
@@ -47,6 +69,10 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoVi
         private final View priorityColorView;
         // 标签显示
         private final MaterialTextView tagsView;
+        // actionMode 选中按钮
+        private final MaterialRadioButton radioButton;
+        // checkbox 完成按钮
+        private final MaterialCheckBox checkBox;
 
         private TodoViewHolder (View itemView) {
             super(itemView);
@@ -56,17 +82,24 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoVi
             alarmImgView = itemView.findViewById(R.id.img_todoitem);
             priorityColorView = itemView.findViewById(R.id.color_view_todoitem);
             tagsView = itemView.findViewById(R.id.text_todoitem_tags);
+            radioButton = itemView.findViewById(R.id.radio_todoitem);
+            checkBox = itemView.findViewById(R.id.checkbox_todoitem);
         }
     }
 
+
     private final LayoutInflater mInflater;
+
+
     // 数据列表
     private List<Todo> mTodos;
+
 
     public TodoListAdapter(Context context) {
         // 加载布局
         mInflater = LayoutInflater.from(context);
     }
+
 
     @NonNull
     @Override
@@ -75,10 +108,57 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoVi
         return new TodoViewHolder(itemView);
     }
 
+
     @Override
     public void onBindViewHolder(@NonNull TodoViewHolder holder, int position) {
         if (mTodos != null) {
             Todo current = mTodos.get(position);
+
+            // 根据 actionMode 修改按钮
+            switch (actionModeState) {
+                case STATE_ACTION_MODE_OFF:
+                    // 隐藏 radiobtn
+                    holder.radioButton.setVisibility(View.GONE);
+                    holder.radioButton.setChecked(false);
+                    // 显示 checkbox
+                    holder.checkBox.setVisibility(View.VISIBLE);
+                    break;
+                case STATE_ACTION_MODE_ON:
+                    // 显示 radiobtn
+                    holder.radioButton.setVisibility(View.VISIBLE);
+                    // 隐藏 checkbox
+                    holder.checkBox.setVisibility(View.GONE);
+                    break;
+            }
+
+            // 设置点击监听
+            holder.itemView.setOnClickListener(v -> {
+                switch (actionModeState) {
+                    case STATE_ACTION_MODE_OFF:
+                        // 点击跳转到编辑页
+                        Log.d(TAG, "onBindViewHolder: " +
+                                "position: " + position +
+                                "todo: " + "\n" + current.toString());
+                        Intent intent = new Intent(holder.itemView.getContext(), MakeTodoActivity.class);
+                        // Intent 中传入 TodoID
+                        intent.putExtra(Todo.TAG, current.getTodoID());
+                        holder.itemView.getContext().startActivity(intent);
+                        break;
+                    case STATE_ACTION_MODE_ON:
+                        // TODO:
+                        if (mTodos.get(position).isChecked()) {
+                            mTodos.get(position).setChecked(false);
+                            holder.radioButton.setChecked(false);
+                            selectIndexs.remove(position);
+                        } else {
+                            holder.radioButton.setChecked(true);
+                            mTodos.get(position).setChecked(true);
+                            selectIndexs.add(position);
+                        }
+                        break;
+                }
+            });
+
             holder.contentView.setText(current.getContent());
             holder.dateView.setText(DateUtil.formDatestr(current.getNoticeTime()));
 
@@ -106,16 +186,7 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoVi
                     break;
             }
 
-            // 点击跳转到编辑页
-            holder.cardView.setOnClickListener(v -> {
-                Log.d(TAG, "onBindViewHolder: " +
-                        "position: " + position +
-                        "todo: " + "\n" + current.toString());
-                Intent intent = new Intent(holder.itemView.getContext(), MakeTodoActivity.class);
-                // Intent 中传入 TodoID
-                intent.putExtra(Todo.TAG, current.getTodoID());
-                holder.itemView.getContext().startActivity(intent);
-            });
+
 
             // 设置提醒图标是否展示
             if (current.getNotice() == Todo.STATE_NOT_NOTICE) {
@@ -166,17 +237,27 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoVi
                 endIndex += text.length() + 3;
             }
             holder.tagsView.setText(spannableString);
+
+            // 长按开启 actionMode
+            holder.itemView.setOnLongClickListener(v -> {
+                mProxy.mStartActionMode(holder.itemView);
+                return true;
+            });
         } else {
             holder.contentView.setText("No todo");
             holder.dateView.setText("No date");
         }
     }
 
+
+    // 设置数据列表
     public void setTodos(List<Todo> todos) {
         mTodos = todos;
         notifyDataSetChanged();
     }
 
+
+    // 往列表中添加一个并且局部刷新（带动画
     public void addTodo(Todo todo) {
         if (mTodos != null) {
             // 加到顶部
@@ -189,10 +270,44 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoVi
         }
     }
 
+
+    // 设置代理
+    public void setmProxy(Proxy proxy) {
+        this.mProxy = proxy;
+    }
+
+
     @Override
     public int getItemCount() {
         if (mTodos != null)
             return mTodos.size();
         else return 0;
+    }
+
+
+    // 删除所选项目
+    public void deleteSeletedItems() {
+        for (Integer integer : this.selectIndexs) {
+            Log.d(TAG, "deleteSeletedItems: index" + integer.intValue());
+            Log.d(TAG, "deleteSeletedItems: mTodossize: " + mTodos.size());
+            new Thread(() -> {
+                MainActivity.mtodoViewModel.delete(mTodos.get(integer.intValue()));
+            }).start();
+        }
+        selectIndexs.clear();
+    }
+
+
+    // 设置 actionMode 模式
+    public void setActionModeState(int actionModeState) {
+        this.actionModeState = actionModeState;
+        this.selectIndexs.clear();
+        this.notifyDataSetChanged();
+    }
+
+    // 给外界实现的代理接口
+    public interface Proxy {
+        // 长按卡片的时候会被调用，开启 actionMode
+        void mStartActionMode(View view);
     }
 }

@@ -13,6 +13,7 @@
     <string name="menu_main_tags">标签管理</string>
     <string name="tag_tips">输入完后，点击回车添加标签</string>
     <string name="tag_already_create">已经有该标签</string>
+    <string name="menu_action_mode_delete">删除所选项目</string>
 
     <string name="title_activity_settings">Settings</string>
 
@@ -30,4 +31,6 @@
     <string name="attachment_summary_on">Automatically download attachments for incoming emails
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="main_bottom_sheet_unlogin">未登录</string>
+    <string name="menu_main_about">关于</string>
 </resources>

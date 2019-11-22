@@ -3,6 +3,7 @@ package com.norah1to.simplenotification.Entity;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
@@ -42,6 +43,7 @@ public class Todo implements Serializable {
         this.tags = new ArrayList<Tag>();
         this.priority = this.PROIORITY_LOW;
         this.notice = this.STATE_NOT_NOTICE;
+        this.checked = false;
     }
 
     @NonNull
@@ -58,6 +60,9 @@ public class Todo implements Serializable {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     private int id;
+
+    @Ignore
+    private boolean checked;
 
     /**
      * 下面的内容是跟云端数据库对应的
@@ -123,6 +128,14 @@ public class Todo implements Serializable {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public boolean isChecked() {
+        return checked;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
     }
 
     @NonNull

@@ -26,12 +26,13 @@
             android:textColor="#000000"
             android:textSize="24sp"
             android:textStyle="bold"
-            app:layout="@+id/checkbox_todoitem"
+            app:layout="@+id/click_area_todoitem"
             app:layout_constrainedWidth="true"
-            app:layout_constraintBaseline_toBaselineOf="@+id/checkbox_todoitem"
+            app:layout_constraintTop_toTopOf="@+id/click_area_todoitem"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/checkbox_todoitem" />
+            app:layout_constraintStart_toEndOf="@+id/click_area_todoitem" />
+
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/text_todoitem_date"
@@ -42,19 +43,38 @@
             android:textColor="@color/color_primary"
             android:textSize="16sp"
             app:layout_constrainedWidth="true"
-            app:layout_constraintLeft_toRightOf="@+id/checkbox_todoitem"
-            app:layout_constraintStart_toEndOf="@+id/checkbox_todoitem"
+            app:layout_constraintLeft_toRightOf="@+id/click_area_todoitem"
+            app:layout_constraintStart_toEndOf="@+id/click_area_todoitem"
             app:layout_constraintTop_toBottomOf="@+id/text_todoitem_content" />
 
-        <com.google.android.material.checkbox.MaterialCheckBox
-            android:id="@+id/checkbox_todoitem"
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/click_area_todoitem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:padding="8dp"
             app:layout_constraintStart_toEndOf="@+id/color_view_todoitem"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/radio_todoitem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:visibility="invisible" />
+
+
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/checkbox_todoitem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+
 
 
         <View
@@ -90,7 +110,7 @@
             android:textSize="16sp"
             app:layout_constrainedWidth="true"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintLeft_toRightOf="@+id/checkbox_todoitem"
+            app:layout_constraintLeft_toRightOf="@+id/click_area_todoitem"
             app:layout_constraintStart_toEndOf="@+id/img_todoitem"
             app:layout_constraintTop_toBottomOf="@+id/text_todoitem_content" />
 

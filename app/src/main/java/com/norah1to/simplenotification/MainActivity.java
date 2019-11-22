@@ -1,12 +1,20 @@
 package com.norah1to.simplenotification;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.ActionMode;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -30,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
 
     private FloatingActionButton fab;
 
+    private SwipeRefreshLayout swipeRefreshLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,16 +49,22 @@ public class MainActivity extends AppCompatActivity {
         // 初始化 todos 的 viewModel，监听 todos，实时更新列表数据
         mtodoViewModel = ViewModelProviders.of(this).get(TodoViewModel.class);
         mtodoViewModel.getAllTodos().observe(this, todos -> {
-            if (first){
-                adapter.setTodos(todos);
-                first = false;
-            } else if (adapter.getItemCount() == todos.size()) {
-                adapter.setTodos(todos);
-            } else {
-                adapter.addTodo(todos.get(0));
-                recyclerView.scrollToPosition(0);
+            switch (adapter.actionModeState) {
+                case TodoListAdapter.STATE_ACTION_MODE_OFF:
+                    if (first){
+                        adapter.setTodos(todos);
+                        first = false;
+                    } else if (adapter.getItemCount() == todos.size()) {
+                        adapter.setTodos(todos);
+                    } else {
+                        adapter.addTodo(todos.get(0));
+                        recyclerView.scrollToPosition(0);
+                    }
+                    break;
+                case TodoListAdapter.STATE_ACTION_MODE_ON:
+                    adapter.setTodos(todos);
+                    break;
             }
-//            adapter.setTodos(todos);
         });
 
 
@@ -57,7 +73,18 @@ public class MainActivity extends AppCompatActivity {
         // 设置适配器
         adapter = new TodoListAdapter(this);
         recyclerView.setAdapter(adapter);
-
+        adapter.setmProxy(new TodoListAdapter.Proxy() {
+            @Override
+            public void mStartActionMode(View view) {
+                // TODO: 开启 actionmode
+//                actionMode.setTitle("fragment_main_sheet title");
+                if (adapter.actionModeState == TodoListAdapter.STATE_ACTION_MODE_OFF) {
+                    startSupportActionMode(new ActionModeCallBack());
+                    adapter.setActionModeState(TodoListAdapter.STATE_ACTION_MODE_ON);
+                    Log.d(TAG, "mStartActionMode: " + "start");
+                }
+            }
+        });
 
         // 初始化下部底栏
         bottomAppBar = (BottomAppBar)findViewById(R.id.bottom_bar);
@@ -94,6 +121,14 @@ public class MainActivity extends AppCompatActivity {
                     return false;
             }
         });
+        // 监听 BottomAppBar navigationitem 点击
+        bottomAppBar.setNavigationOnClickListener(v -> {
+            //TODO: 打开 bottom sheet
+            FragmentManager fragmentManager =  this.getSupportFragmentManager();
+            MainSheetDialogFragment mainSheetDialogFragment = new MainSheetDialogFragment();
+            mainSheetDialogFragment.show(fragmentManager, "233");
+            fragmentManager.beginTransaction();
+        });
 
 
         // 监听 fab 点击
@@ -101,10 +136,60 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, MakeTodoActivity.class);
             startActivity(intent);
         });
+
+
+        // 初始化 swipeReflashLayout
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_reflash_main);
+        swipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(
+                this,
+                R.color.color_primary
+        ));
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            new Thread(() -> {
+                // TODO: 获取数据
+                swipeRefreshLayout.setRefreshing(false);
+            }).start();
+        });
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+
+    // actionMode 钩子函数覆写
+    private class ActionModeCallBack implements ActionMode.Callback {
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            fab.hide();
+            bottomAppBar.setVisibility(View.INVISIBLE);
+            mode.getMenuInflater().inflate(R.menu.main_action_mode_menu, menu);
+            mode.setTitle("多选操作");
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.menuitem_main_action_mode_delete:
+                    // Todo: 在适配器中删除所选条目
+                    adapter.deleteSeletedItems();
+                    break;
+            }
+            return false;
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            adapter.setActionModeState(TodoListAdapter.STATE_ACTION_MODE_OFF);
+            fab.show();
+            bottomAppBar.setVisibility(View.VISIBLE);
+        }
     }
 }
