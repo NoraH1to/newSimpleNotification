@@ -42,7 +42,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class MakeTodoActivity extends AppCompatActivity {
+public class MakeTodoActivity extends BaseActivity {
 
     private static final String TAG = "MakeTodoActivity";
 

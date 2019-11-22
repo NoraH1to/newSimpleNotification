@@ -1,5 +1,6 @@
 package com.norah1to.simplenotification;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import androidx.annotation.Nullable;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textview.MaterialTextView;
+import com.norah1to.simplenotification.Settings.SharePreferencesHelper;
 
 public class MainSheetDialogFragment extends BottomSheetDialogFragment {
 
@@ -51,6 +53,43 @@ public class MainSheetDialogFragment extends BottomSheetDialogFragment {
         // 初始化关于卡片
         aboutCard = (MaterialCardView) view.findViewById(R.id.about_card_main_bottom_sheet);
 
+        // 跳转用户
+        userCard.setOnClickListener(v -> {
+            this.dismiss();
+            // 用户登入就到用户中心
+            Intent intent;
+            if (SharePreferencesHelper.getUserState(this.getContext()) != null) {
+                intent = new Intent(this.getContext(), UserCenterActivity.class);
+            } else { // 否则就登入
+                intent = new Intent(this.getContext(), LoginActivity.class);
+            }
+            startActivity(intent);
+        });
+
+        // 跳转设置
+        settingCard.setOnClickListener(v -> {
+            this.dismiss();
+            Intent intent = new Intent(view.getContext(), SettingsActivity.class);
+            startActivity(intent);
+        });
+
+        // 跳转关于
+        aboutCard.setOnClickListener(v -> {
+            this.dismiss();
+            Intent intent = new Intent(view.getContext(), AboutActivity.class);
+            startActivity(intent);
+        });
+
+        initUserInfo();
+
         return view;
+    }
+
+    private void initUserInfo() {
+        //TODO: 初始化用户信息显示
+        String account = SharePreferencesHelper.getUserState(this.getContext());
+        if (account != null) {
+            userAccount.setText(account);
+        }
     }
 }

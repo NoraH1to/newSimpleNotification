@@ -16,7 +16,7 @@ import com.norah1to.simplenotification.Entity.Tag;
 import com.norah1to.simplenotification.Util.ChipUtil;
 import com.norah1to.simplenotification.ViewModel.TagViewModel;
 
-public class TagActivity extends AppCompatActivity {
+public class TagActivity extends BaseActivity {
 
     public static final String TAG = "TagActivity";
 

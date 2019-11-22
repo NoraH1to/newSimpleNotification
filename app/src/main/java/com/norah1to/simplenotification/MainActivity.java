@@ -19,10 +19,9 @@ import android.view.View;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.norah1to.simplenotification.Adapter.TodoListAdapter;
-import com.norah1to.simplenotification.Settings.SettingsActivity;
 import com.norah1to.simplenotification.ViewModel.TodoViewModel;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     private static final String TAG = "MainActivity";
 
@@ -108,10 +107,6 @@ public class MainActivity extends AppCompatActivity {
         bottomAppBar.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
                 case R.id.bottom_app_bar_menu_search:
-                    return true;
-                case R.id.bottom_app_bar_menu_settings:
-                    Intent intent = new Intent(this, SettingsActivity.class);
-                    startActivity(intent);
                     return true;
                 case R.id.bottom_app_bar_menu_tags:
                     Intent intent1 = new Intent(this, TagActivity.class);

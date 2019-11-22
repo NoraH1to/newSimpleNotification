@@ -6,7 +6,7 @@ import android.os.AsyncTask;
 import androidx.lifecycle.LiveData;
 
 import com.norah1to.simplenotification.Dao.TagDao;
-import com.norah1to.simplenotification.DataBase.TagRoomDataBase;
+import com.norah1to.simplenotification.DataBase.TodoRoomDataBase;
 import com.norah1to.simplenotification.Entity.Tag;
 
 import java.util.List;
@@ -16,8 +16,8 @@ public class TagRepository {
     private LiveData<List<Tag>> mAllTags;
 
     public TagRepository(Application application) {
-        // 获得 TagRoom 的 db 对象
-        TagRoomDataBase db = TagRoomDataBase.getDatabase(application);
+        // 获得 TodoRoom 的 db 对象
+        TodoRoomDataBase db = TodoRoomDataBase.getDatabase(application);
         // 拿到 db 中的 dao
         mTagDao = db.tagDao();
         // 拿到数据库中所有的 tag
