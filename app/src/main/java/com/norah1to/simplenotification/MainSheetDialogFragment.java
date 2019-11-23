@@ -86,7 +86,6 @@ public class MainSheetDialogFragment extends BottomSheetDialogFragment {
     }
 
     private void initUserInfo() {
-        //TODO: 初始化用户信息显示
         String account = SharePreferencesHelper.getUserState(this.getContext());
         if (account != null) {
             userAccount.setText(account);

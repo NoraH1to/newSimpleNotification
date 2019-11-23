@@ -74,7 +74,6 @@ public class Todo implements Serializable {
     private String todoID;
 
     // 用户的 ID
-    @NonNull
     @ColumnInfo(name = "user_id")
     private String userID;
 
@@ -89,20 +88,20 @@ public class Todo implements Serializable {
 
     // 提醒的时间
     @ColumnInfo(name = "notice_timestamp")
-    private Date noticeTime;
+    private Date noticeTimeStamp;
 
     // 创建的时间
     @NonNull
     @ColumnInfo(name = "created_timestamp")
-    private Date createTime;
+    private Date createdTimeStamp;
 
     // 完成的时间
     @ColumnInfo(name = "completed_timestamp")
-    private Date completedTime;
+    private Date completedTimeStamp;
 
     // 最后修改的时间
     @ColumnInfo(name = "modified_timestamp")
-    private Date modifiedTime;
+    private Date modifiedTimeStamp;
 
     // 删除状态
     @ColumnInfo(name = "deleted")
@@ -147,12 +146,11 @@ public class Todo implements Serializable {
         this.todoID = todoID;
     }
 
-    @NonNull
     public String getUserID() {
         return userID;
     }
 
-    public void setUserID(@NonNull String userID) {
+    public void setUserID(String userID) {
         this.userID = userID;
     }
 
@@ -165,14 +163,6 @@ public class Todo implements Serializable {
         this.content = content;
     }
 
-    public Date getNoticeTime() {
-        return noticeTime;
-    }
-
-    public void setNoticeTime(Date noticeTime) {
-        this.noticeTime = noticeTime;
-    }
-
     public int getNotice() {
         return notice;
     }
@@ -181,29 +171,37 @@ public class Todo implements Serializable {
         this.notice = notice;
     }
 
+    public Date getNoticeTimeStamp() {
+        return noticeTimeStamp;
+    }
+
+    public void setNoticeTimeStamp(Date noticeTimeStamp) {
+        this.noticeTimeStamp = noticeTimeStamp;
+    }
+
     @NonNull
-    public Date getCreateTime() {
-        return createTime;
+    public Date getCreatedTimeStamp() {
+        return createdTimeStamp;
     }
 
-    public void setCreateTime(@NonNull Date createTime) {
-        this.createTime = createTime;
+    public void setCreatedTimeStamp(@NonNull Date createdTimeStamp) {
+        this.createdTimeStamp = createdTimeStamp;
     }
 
-    public Date getCompletedTime() {
-        return completedTime;
+    public Date getCompletedTimeStamp() {
+        return completedTimeStamp;
     }
 
-    public void setCompletedTime(Date completedTime) {
-        this.completedTime = completedTime;
+    public void setCompletedTimeStamp(Date completedTimeStamp) {
+        this.completedTimeStamp = completedTimeStamp;
     }
 
-    public Date getModifiedTime() {
-        return modifiedTime;
+    public Date getModifiedTimeStamp() {
+        return modifiedTimeStamp;
     }
 
-    public void setModifiedTime(Date modifiedTime) {
-        this.modifiedTime = modifiedTime;
+    public void setModifiedTimeStamp(Date modifiedTimeStamp) {
+        this.modifiedTimeStamp = modifiedTimeStamp;
     }
 
     public int getDeleted() {

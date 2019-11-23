@@ -21,13 +21,13 @@ public interface TodoDao {
     @Query("DELETE FROM todo_table")
     int deleteAll();
 
-    @Delete
-    int deleteTodo(Todo todo);
+    @Query("UPDATE todo_table SET deleted = :deleteState WHERE todo_id = :todoID")
+    int deleteTodo(String todoID, int deleteState);
 
     @Delete
     int deleteTodos(List<Todo> todos);
 
-    @Query("SELECT * FROM todo_table ORDER BY sort_order DESC, created_timestamp DESC")
+    @Query("SELECT * FROM todo_table WHERE deleted != 1 ORDER BY sort_order DESC, created_timestamp DESC")
     LiveData<List<Todo>> getAllTodos();
 
     @Query("SELECT * FROM todo_table WHERE todo_id=:todoID")
@@ -35,4 +35,15 @@ public interface TodoDao {
 
     @Update
     void updateTodo(Todo... todos);
+
+    @Query("SELECT * FROM todo_table WHERE modified_timestamp > :lastSyncTimeStamp " +
+            "AND created_timestamp > :lastSyncTimeStamp AND deleted != 1")
+    List<Todo> getCreateTodos(long lastSyncTimeStamp);
+
+    @Query("SELECT * FROM todo_table WHERE modified_timestamp > :lastSyncTimeStamp " +
+            "AND created_timestamp <= :lastSyncTimeStamp AND deleted != 1")
+    List<Todo> getModifiedTodos(long lastSyncTimeStamp);
+
+    @Query("SELECT * FROM todo_table WHERE modified_timestamp > :lastSyncTimeStamp AND deleted = 1")
+    List<Todo> getDeletedTodos(long lastSyncTimeStamp);
 }

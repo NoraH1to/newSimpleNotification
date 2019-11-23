@@ -7,6 +7,7 @@ import androidx.room.Entity;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
+import java.util.Date;
 import java.util.UUID;
 
 @Entity(tableName = "tag_table", indices = {@Index(value = {"name"}, unique = true)})
@@ -15,10 +16,16 @@ public class Tag {
     private static final String STATE_VISIBLE = "1";
     private static final String STATE_NOT_VISIBLE = "0";
 
+    public static final int STATE_DELETED = 1;
+    public static final int STATE_NOT_DELETED = 0;
+
     public Tag() {
         // TODO: tag构造方法
         this.tagID = UUID.randomUUID().toString();
         this.visible = this.STATE_VISIBLE;
+        this.createdTimeStamp = new Date();
+        this.modifiedTimeStamp = new Date();
+        this.deleted = STATE_NOT_DELETED;
     }
 
     @Override
@@ -48,13 +55,22 @@ public class Tag {
     @ColumnInfo(name = "tag_id")
     private String tagID;
 
-    @NonNull
     @ColumnInfo(name = "user_id")
     private String userID;
 
     @NonNull
     @ColumnInfo(name = "name")
     private String name;
+
+    @ColumnInfo(name = "deleted")
+    private int deleted;
+
+    @ColumnInfo(name = "modified_timestamp")
+    private Date modifiedTimeStamp;
+
+    @NonNull
+    @ColumnInfo(name = "created_timestamp")
+    private Date createdTimeStamp;
 
     @NonNull
     @ColumnInfo(name = "visible")
@@ -99,5 +115,30 @@ public class Tag {
 
     public void setVisible(@NonNull String visible) {
         this.visible = visible;
+    }
+
+    public Date getModifiedTimeStamp() {
+        return modifiedTimeStamp;
+    }
+
+    public void setModifiedTimeStamp(Date modifiedTimeStamp) {
+        this.modifiedTimeStamp = modifiedTimeStamp;
+    }
+
+    @NonNull
+    public Date getCreatedTimeStamp() {
+        return createdTimeStamp;
+    }
+
+    public void setCreatedTimeStamp(@NonNull Date createdTimeStamp) {
+        this.createdTimeStamp = createdTimeStamp;
+    }
+
+    public int getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(int deleted) {
+        this.deleted = deleted;
     }
 }

@@ -75,8 +75,6 @@ public class MainActivity extends BaseActivity {
         adapter.setmProxy(new TodoListAdapter.Proxy() {
             @Override
             public void mStartActionMode(View view) {
-                // TODO: 开启 actionmode
-//                actionMode.setTitle("fragment_main_sheet title");
                 if (adapter.actionModeState == TodoListAdapter.STATE_ACTION_MODE_OFF) {
                     startSupportActionMode(new ActionModeCallBack());
                     adapter.setActionModeState(TodoListAdapter.STATE_ACTION_MODE_ON);
@@ -119,7 +117,6 @@ public class MainActivity extends BaseActivity {
         });
         // 监听 BottomAppBar navigationitem 点击
         bottomAppBar.setNavigationOnClickListener(v -> {
-            //TODO: 打开 bottom sheet
             FragmentManager fragmentManager =  this.getSupportFragmentManager();
             MainSheetDialogFragment mainSheetDialogFragment = new MainSheetDialogFragment();
             mainSheetDialogFragment.show(fragmentManager, "233");
@@ -174,7 +171,6 @@ public class MainActivity extends BaseActivity {
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.menuitem_main_action_mode_delete:
-                    // Todo: 在适配器中删除所选条目
                     adapter.deleteSeletedItems();
                     break;
             }

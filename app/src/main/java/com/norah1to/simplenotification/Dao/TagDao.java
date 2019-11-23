@@ -18,14 +18,14 @@ public interface TagDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Tag tag);
 
-    @Query("SELECT * FROM tag_table")
+    @Query("SELECT * FROM tag_table WHERE deleted != 1")
     LiveData<List<Tag>> getAllTags();
 
-    @Query("SELECT * FROM tag_table")
+    @Query("SELECT * FROM tag_table WHERE deleted != 1")
     List<Tag> getAllTagsRaw();
 
-    @Delete
-    int deleteTag(Tag tag);
+    @Query("UPDATE tag_table SET deleted = :deleteState WHERE tag_id = :tagID")
+    int deleteTag(String tagID, int deleteState);
 
     @Query("SELECT * FROM tag_table WHERE tag_id = :tagID")
     Tag getTag(String tagID);
@@ -33,6 +33,17 @@ public interface TagDao {
     @Query("SELECT * FROM tag_table WHERE name = :name")
     Tag getTagByName(String name);
 
-    @Query("DELETE FROM tag_table WHERE name = :name")
+    @Query("UPDATE tag_table SET deleted = 1 WHERE name = :name")
     int deleteTagByName(String name);
+
+    @Query("SELECT * FROM tag_table WHERE modified_timestamp > :lastSyncTimeStamp " +
+            "AND created_timestamp > :lastSyncTimeStamp AND deleted != 1")
+    List<Tag> getCreateTags(long lastSyncTimeStamp);
+
+    @Query("SELECT * FROM tag_table WHERE modified_timestamp > :lastSyncTimeStamp " +
+            "AND created_timestamp <= :lastSyncTimeStamp AND deleted != 1")
+    List<Tag> getModifiedTags(long lastSyncTimeStamp);
+
+    @Query("SELECT * FROM tag_table WHERE modified_timestamp > :lastSyncTimeStamp AND deleted = 1")
+    List<Tag> getDeletedTags(long lastSyncTimeStamp);
 }

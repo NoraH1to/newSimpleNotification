@@ -160,7 +160,7 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoVi
             });
 
             holder.contentView.setText(current.getContent());
-            holder.dateView.setText(DateUtil.formDatestr(current.getNoticeTime()));
+            holder.dateView.setText(DateUtil.formDatestr(current.getNoticeTimeStamp()));
 
             // 根据优先级切换卡片强调色
             switch (current.getPriority()) {
@@ -291,7 +291,8 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoVi
             Log.d(TAG, "deleteSeletedItems: index" + integer.intValue());
             Log.d(TAG, "deleteSeletedItems: mTodossize: " + mTodos.size());
             new Thread(() -> {
-                MainActivity.mtodoViewModel.delete(mTodos.get(integer.intValue()));
+                Todo tmpTodo = mTodos.get(integer.intValue());
+                MainActivity.mtodoViewModel.delete(tmpTodo.getTodoID(), Todo.STATE_DELETED);
             }).start();
         }
         selectIndexs.clear();

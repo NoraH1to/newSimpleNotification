@@ -33,7 +33,7 @@ public class TagRepository {
     }
 
     public int deleteTag(Tag tag) {
-        return mTagDao.deleteTag(tag);
+        return mTagDao.deleteTag(tag.getTagID(), Tag.STATE_DELETED);
     }
 
     public int deleteTagByName(String name) {

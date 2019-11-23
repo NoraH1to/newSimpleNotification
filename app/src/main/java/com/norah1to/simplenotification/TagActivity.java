@@ -13,8 +13,12 @@ import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.textfield.TextInputEditText;
 import com.norah1to.simplenotification.Entity.Tag;
+import com.norah1to.simplenotification.Entity.User;
+import com.norah1to.simplenotification.Settings.SharePreferencesHelper;
 import com.norah1to.simplenotification.Util.ChipUtil;
 import com.norah1to.simplenotification.ViewModel.TagViewModel;
+
+import java.util.Date;
 
 public class TagActivity extends BaseActivity {
 
@@ -46,8 +50,10 @@ public class TagActivity extends BaseActivity {
                 if ((event != null && KeyEvent.KEYCODE_ENTER == event.getKeyCode() &&
                         KeyEvent.ACTION_DOWN == event.getAction())) {
                     Tag tag = new Tag();
+                    tag.setCreatedTimeStamp(new Date());
+                    tag.setModifiedTimeStamp(new Date());
                     tag.setName(v.getText().toString());
-                    tag.setUserID("testID"); // TODO: 替换成全局用户 ID
+                    User tmpUser = BaseActivity.userViewModel.getmUser().getValue();
                     try {
                         tagViewModel.insert(tag);
                         tagGroup.addView(ChipUtil.createChip(v.getContext(), v.getText().toString(), getMenuCloseClickListener()));
@@ -80,6 +86,10 @@ public class TagActivity extends BaseActivity {
         return v -> {
             try {
                 Thread thread = new Thread(() -> {
+                    String name = ((Chip) v).getText().toString();
+                    Tag tmpTag = tagViewModel.getTagByName(name);
+                    tmpTag.setModifiedTimeStamp(new Date());
+                    tagViewModel.insert(tmpTag);
                     tagViewModel.deleteByName(((Chip) v).getText().toString());
                 });
                 thread.start();

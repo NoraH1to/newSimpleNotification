@@ -108,11 +108,6 @@ public class MakeTodoActivity extends BaseActivity {
             for (Tag tag : mAddTags) {
                 tagGroup.addView(ChipUtil.createChip(this, tag.getName(), getMenuCloseListener()));
             }
-//            new Thread(() -> {
-//                Todo tmpTodo = makeTodoViewModel.getmTodo().getValue();
-//                tmpTodo.setTags(new ArrayList<Tag>(mAddTags));
-//                makeTodoViewModel.getmTodo().postValue(tmpTodo);
-//            }).start();
         });
         // 监听 mTodo 的变化
         makeTodoViewModel.getmTodo().observe(this, mTodo -> {
@@ -241,11 +236,11 @@ public class MakeTodoActivity extends BaseActivity {
             todo = new Todo();
         }
         todo.setContent(contentInput.getText().toString());
-        todo.setNoticeTime(makeTodoViewModel.getmData().getValue());
+        todo.setNoticeTimeStamp(makeTodoViewModel.getmData().getValue());
+        todo.setNoticeTimeStamp(new Date());
         todo.setTags(new ArrayList<Tag>(makeTodoViewModel.getmAddTags().getValue()));
-        if (todo.getCreateTime() == null)
-            todo.setCreateTime(new Date());
-        todo.setUserID("testID");
+        if (todo.getCreatedTimeStamp() == null)
+            todo.setCreatedTimeStamp(new Date());
         todoViewModel.insert(todo);
         finish();
     }

@@ -35,8 +35,8 @@ public class TodoRepository {
         return mTodoDao.getTodo(todoID);
     }
 
-    public int deleteTodo(Todo todo) {
-        return mTodoDao.deleteTodo(todo);
+    public int deleteTodo(String todoID, int deleteState) {
+        return mTodoDao.deleteTodo(todoID, deleteState);
     }
 
     public void insert (Todo todo) {

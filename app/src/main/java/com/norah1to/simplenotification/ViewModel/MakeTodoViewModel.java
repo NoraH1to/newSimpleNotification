@@ -10,7 +10,6 @@ import com.norah1to.simplenotification.Entity.Todo;
 import com.norah1to.simplenotification.Repository.TagRepository;
 import com.norah1to.simplenotification.Repository.TodoRepository;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -42,7 +41,7 @@ public class MakeTodoViewModel extends AndroidViewModel {
         if (tmpTodo == null)
             return;
         mTodo.postValue(tmpTodo);
-        mDate.postValue(tmpTodo.getNoticeTime());
+        mDate.postValue(tmpTodo.getNoticeTimeStamp());
         mAddTags.postValue(new HashSet<Tag>(tmpTodo.getTags()));
     }
 
