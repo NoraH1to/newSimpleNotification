@@ -33,8 +33,8 @@ public interface TagDao {
     @Query("SELECT * FROM tag_table WHERE name = :name")
     Tag getTagByName(String name);
 
-    @Query("UPDATE tag_table SET deleted = 1 WHERE name = :name")
-    int deleteTagByName(String name);
+    @Query("UPDATE tag_table SET deleted = 1, modified_timestamp = :time WHERE name = :name")
+    int deleteTagByName(String name, long time);
 
     @Query("SELECT * FROM tag_table WHERE modified_timestamp > :lastSyncTimeStamp " +
             "AND created_timestamp > :lastSyncTimeStamp AND deleted != 1")

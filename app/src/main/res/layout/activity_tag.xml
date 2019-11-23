@@ -6,43 +6,28 @@
     android:layout_height="match_parent"
     tools:context=".TagActivity">
 
-<!--    <com.google.android.material.textview.MaterialTextView-->
-<!--        android:id="@+id/text_tips_tag"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:textColor="@color/colorGrey"-->
-<!--        android:text="@string/tag_tips"-->
-<!--        android:textAlignment="center"-->
-<!--        app:layout_constraintBottom_toTopOf="@+id/horizontalScrollView"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent" />-->
 
-<!--    <HorizontalScrollView-->
-<!--        android:id="@+id/horizontalScrollView"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="0dp"-->
-<!--        android:orientation="vertical"-->
-<!--        app:layout_constraintBottom_toTopOf="@+id/input_layout_create_tag"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent">-->
-
-    <com.google.android.material.chip.ChipGroup
-        android:id="@+id/chip_group_tag"
+    <ScrollView
         android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:padding="16dp"
-        app:chipSpacing="8dp"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/input_layout_create_tag"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:singleLine="false">
+        app:layout_constraintVertical_bias="1.0">
 
-        <!-- Chips can be declared here, or added dynamically. -->
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chip_group_tag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            app:chipSpacing="8dp"
+            app:singleLine="false">
 
-    </com.google.android.material.chip.ChipGroup>
-<!--    </HorizontalScrollView>-->
+        </com.google.android.material.chip.ChipGroup>
+
+    </ScrollView>
 
 
     <com.google.android.material.textfield.TextInputLayout

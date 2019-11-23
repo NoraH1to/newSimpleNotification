@@ -157,6 +157,7 @@ public class MainActivity extends BaseActivity {
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
             fab.hide();
             bottomAppBar.setVisibility(View.INVISIBLE);
+            swipeRefreshLayout.setPadding(0, 0, 0, 0);
             mode.getMenuInflater().inflate(R.menu.main_action_mode_menu, menu);
             mode.setTitle("多选操作");
             return true;
@@ -180,6 +181,8 @@ public class MainActivity extends BaseActivity {
         @Override
         public void onDestroyActionMode(ActionMode mode) {
             adapter.setActionModeState(TodoListAdapter.STATE_ACTION_MODE_OFF);
+            swipeRefreshLayout.setPaddingRelative(0, 0, 0,
+                    (int)(getApplicationContext().getResources().getDisplayMetrics().density*56 +0.5f));
             fab.show();
             bottomAppBar.setVisibility(View.VISIBLE);
             swipeRefreshLayout.setEnabled(true);

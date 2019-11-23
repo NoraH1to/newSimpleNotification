@@ -33,8 +33,8 @@
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="main_bottom_sheet_unlogin">未登录</string>
     <string name="menu_main_about">关于</string>
-    <string name="login_password_input_hint">密码 8-32位</string>
-    <string name="login_account_input_hint">账号: 6-32位</string>
+    <string name="login_password_input_hint">密码</string>
+    <string name="login_account_input_hint">账号</string>
     <string name="btn_login_register">注册</string>
     <string name="btn_register_register">注册</string>
     <string name="btn_login_login">登入</string>

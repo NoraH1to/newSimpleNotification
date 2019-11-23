@@ -9,6 +9,7 @@ import com.norah1to.simplenotification.Dao.TagDao;
 import com.norah1to.simplenotification.DataBase.TodoRoomDataBase;
 import com.norah1to.simplenotification.Entity.Tag;
 
+import java.util.Date;
 import java.util.List;
 
 public class TagRepository {
@@ -37,7 +38,7 @@ public class TagRepository {
     }
 
     public int deleteTagByName(String name) {
-        return mTagDao.deleteTagByName(name);
+        return mTagDao.deleteTagByName(name, new Date().getTime());
     }
 
     public void insert (Tag tag) {

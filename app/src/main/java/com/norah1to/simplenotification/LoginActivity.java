@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Toast;
 
@@ -14,6 +15,8 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.norah1to.simplenotification.Http.HttpHelper;
 
 public class LoginActivity extends AppCompatActivity {
+
+    public static final String TAG = "LoginActivity";
 
     private Handler handler = new Handler(Looper.getMainLooper());
 
@@ -80,12 +83,11 @@ public class LoginActivity extends AppCompatActivity {
         }));
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume: ");
         inputAccount.requestFocus();
     }
-
-
 }

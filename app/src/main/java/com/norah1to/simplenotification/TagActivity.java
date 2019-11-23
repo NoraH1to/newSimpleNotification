@@ -1,6 +1,8 @@
 package com.norah1to.simplenotification;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -21,6 +23,8 @@ import com.norah1to.simplenotification.ViewModel.TagViewModel;
 import java.util.Date;
 
 public class TagActivity extends BaseActivity {
+
+    private Handler handler = new Handler(Looper.getMainLooper());
 
     public static final String TAG = "TagActivity";
 
@@ -87,13 +91,12 @@ public class TagActivity extends BaseActivity {
             try {
                 Thread thread = new Thread(() -> {
                     String name = ((Chip) v).getText().toString();
-                    Tag tmpTag = tagViewModel.getTagByName(name);
-                    tmpTag.setModifiedTimeStamp(new Date());
-                    tagViewModel.insert(tmpTag);
-                    tagViewModel.deleteByName(((Chip) v).getText().toString());
+                    tagViewModel.deleteByName(name);
+                    handler.post(() -> {
+                        tagGroup.removeView(v);
+                    });
                 });
                 thread.start();
-                tagGroup.removeView(v);
             } catch (Exception e) {
                 Log.d(TAG, "onDeleteClick: " + e.toString());
             }

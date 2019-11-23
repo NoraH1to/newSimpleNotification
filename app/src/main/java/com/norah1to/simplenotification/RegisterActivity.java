@@ -54,4 +54,11 @@ public class RegisterActivity extends AppCompatActivity {
             HttpRequestThread.start();
         });
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        inputAccount.requestFocus();
+    }
 }

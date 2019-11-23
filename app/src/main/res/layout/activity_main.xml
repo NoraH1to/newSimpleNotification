@@ -13,7 +13,8 @@
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipe_reflash_main"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:paddingBottom="56dp">
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/list_main"
                 android:layout_width="match_parent"
@@ -35,7 +36,6 @@
         app:fabAlignmentMode="end"
         app:fabAnimationMode="scale"
         app:fabCradleMargin="8dp"
-        app:hideOnScroll="true"
         app:menu="@menu/main_bottom_app_bar_menu"
         app:layout_behavior="com.google.android.material.bottomappbar.BottomAppBar$Behavior">
 
