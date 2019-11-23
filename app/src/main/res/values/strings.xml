@@ -36,5 +36,10 @@
     <string name="login_password_input_hint">密码 8-32位</string>
     <string name="login_account_input_hint">账号: 6-32位</string>
     <string name="btn_login_register">注册</string>
+    <string name="btn_register_register">注册</string>
     <string name="btn_login_login">登入</string>
+    <string name="text_register_title">注册</string>
+    <string name="text_login_title">登入</string>
+    <string name="login_confirm_password_input_hint">确认密码 8-32位</string>
+    <string name="btn_user_center_logout">登出</string>
 </resources>

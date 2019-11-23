@@ -81,6 +81,7 @@ public class MainActivity extends BaseActivity {
                     startSupportActionMode(new ActionModeCallBack());
                     adapter.setActionModeState(TodoListAdapter.STATE_ACTION_MODE_ON);
                     Log.d(TAG, "mStartActionMode: " + "start");
+                    swipeRefreshLayout.setEnabled(false);
                 }
             }
         });
@@ -185,6 +186,7 @@ public class MainActivity extends BaseActivity {
             adapter.setActionModeState(TodoListAdapter.STATE_ACTION_MODE_OFF);
             fab.show();
             bottomAppBar.setVisibility(View.VISIBLE);
+            swipeRefreshLayout.setEnabled(true);
         }
     }
 }

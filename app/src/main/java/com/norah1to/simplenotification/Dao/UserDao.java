@@ -2,6 +2,7 @@ package com.norah1to.simplenotification.Dao;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
@@ -16,5 +17,8 @@ public interface UserDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(User user);
+
+    @Delete
+    int delete(User user);
 
 }

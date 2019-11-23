@@ -35,6 +35,10 @@ dependencies {
     // fastJSON
     implementation 'com.alibaba:fastjson:1.1.71.android'
 
+    // okhttp
+    implementation 'com.squareup.okhttp3:okhttp:3.14.2'
+    implementation 'com.squareup.okio:okio:1.17.4'
+
     // glide
     implementation 'com.github.bumptech.glide:glide:4.10.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.10.0'

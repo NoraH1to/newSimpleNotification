@@ -6,9 +6,14 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import java.util.Date;
+import java.util.UUID;
 
 @Entity(tableName = "user_table")
 public class User {
+
+    public User() {
+        this.userID = UUID.randomUUID().toString();
+    }
 
     @ColumnInfo(name = "account")
     @NonNull
@@ -20,11 +25,14 @@ public class User {
 
     @PrimaryKey
     @NonNull
-    @ColumnInfo(name = "userID")
+    @ColumnInfo(name = "user_id")
     private String userID;
 
     @ColumnInfo(name = "last_sync_timestamp")
     private Date lastSyncTimestamp;
+
+    @ColumnInfo(name = "session_id")
+    private String sessionID;
 
     public String getAccount() {
         return account;
@@ -56,5 +64,13 @@ public class User {
 
     public void setLastSyncTimestamp(Date lastSyncTimestamp) {
         this.lastSyncTimestamp = lastSyncTimestamp;
+    }
+
+    public String getSessionID() {
+        return sessionID;
+    }
+
+    public void setSessionID(String sessionID) {
+        this.sessionID = sessionID;
     }
 }

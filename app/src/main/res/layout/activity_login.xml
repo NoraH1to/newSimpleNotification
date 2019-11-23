@@ -7,6 +7,17 @@
     android:layout_height="match_parent"
     tools:context=".LoginActivity">
 
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/text_login_title"
+        android:textColor="@color/color_primary_variant"
+        android:textSize="64sp"
+        android:layout_margin="64dp"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/input_layout_login_account"
+        android:text="@string/text_login_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/input_layout_login_account"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -42,6 +53,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:singleLine="true"
+            android:imeOptions="actionDone"
             android:hint="@string/login_password_input_hint" />
     </com.google.android.material.textfield.TextInputLayout>
 

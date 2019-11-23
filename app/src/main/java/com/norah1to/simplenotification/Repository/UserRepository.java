@@ -25,6 +25,10 @@ public class UserRepository {
         return mUser;
     }
 
+    public int deleteUser() {
+        return mUserDao.delete(getmUser().getValue());
+    }
+
     public void insert (User user) {
         new UserRepository.insertAsyncTask(mUserDao).execute(user);
     }
