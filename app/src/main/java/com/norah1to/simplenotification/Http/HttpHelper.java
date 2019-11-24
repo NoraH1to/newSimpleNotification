@@ -53,7 +53,7 @@ public class HttpHelper {
 
     // logout 请求
     public static ResultBean Logout(Handler mainHandle) {
-        Response response = baseRequest(ROUTE_LOGOUT, "");
+        Response response = baseRequest(ROUTE_LOGOUT, "{}");
         try {
             if (response != null) {
                 JSONObject jsonObject = JSONObject.parseObject(response.body().string());
@@ -139,10 +139,8 @@ public class HttpHelper {
             if (tmpUser != null) {
                 sessionID = tmpUser.getSessionID();
             }
-            String cookieContent;
-            if (sessionID == null) {
-                cookieContent = "";
-            } else {
+            String cookieContent = "";
+            if (sessionID != null) {
                 cookieContent = new StringBuilder()
                         .append("session=")
                         .append(sessionID)
