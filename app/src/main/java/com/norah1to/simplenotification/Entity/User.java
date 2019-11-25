@@ -13,6 +13,7 @@ public class User {
 
     public User() {
         this.userID = UUID.randomUUID().toString();
+        this.lastSyncTimestamp = new Date(0);
     }
 
     @ColumnInfo(name = "account")
