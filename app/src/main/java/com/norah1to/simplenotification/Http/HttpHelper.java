@@ -14,6 +14,7 @@ import com.norah1to.simplenotification.Entity.User;
 import com.norah1to.simplenotification.MainActivity;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -65,11 +66,14 @@ public class HttpHelper {
             return new ResultBean(false, MSG_SYNC_UNLOGIN);
         }
 
+        Log.d(TAG, "syncData: User: " + user.getSessionID());
+
         /**
          *  同步Todo
          */
         // 封装要传输的数据
         JSONObject jsonObject = new JSONObject();
+        Log.e(TAG, "syncData: last_sync_time" + user.getLastSyncTimestamp(), null);
         jsonObject.put("last_sync_timestamp", user.getLastSyncTimestamp());
         jsonObject.put("added", createTodoList);
         jsonObject.put("updated", updateTodoList);
@@ -77,7 +81,9 @@ public class HttpHelper {
         Response response = baseRequest(ROUTE_SYNC_TODO, jsonObject.toJSONString());
         try {
             if (response != null) {
-                JSONObject resultSyncTodo = JSONObject.parseObject(response.body().string());
+                String jsonStr = response.body().string();
+                Log.d(TAG, "syncData: " + jsonStr);
+                JSONObject resultSyncTodo = JSONObject.parseObject(jsonStr);
                 if (resultSyncTodo.getBoolean("success")) {
                     List<Todo> insertTodoList = new ArrayList<Todo>();
                     JSONObject resultDataJson = JSON.parseObject(
@@ -88,6 +94,7 @@ public class HttpHelper {
                             JSON.parseArray(resultDataJson.getString("updated"), Todo.class));
                     insertTodoList.addAll(
                             JSON.parseArray(resultDataJson.getString("deleted"), Todo.class));
+                    Log.d(TAG, "syncData: todolistSIZE " + insertTodoList.size());
                     MainActivity.mtodoViewModel.insertTodo(
                             insertTodoList.toArray(new Todo[0]));
                 } else {
@@ -113,7 +120,9 @@ public class HttpHelper {
         Response response1 = baseRequest(ROUTE_SYNC_TAG, jsonObject1.toJSONString());
         try {
             if (response1 != null) {
-                JSONObject resultSyncTag = JSONObject.parseObject(response1.body().string());
+                String jsonStr =response1.body().string();
+                Log.d(TAG, "syncData: " + jsonStr);
+                JSONObject resultSyncTag = JSONObject.parseObject(jsonStr);
                 if (resultSyncTag.getBoolean("success")) {
                     List<Tag> insertTagList = new ArrayList<Tag>();
                     JSONObject resultDataJson = JSON.parseObject(
@@ -185,7 +194,9 @@ public class HttpHelper {
                 User tmpUser = BaseActivity.userViewModel.getmUser().getValue();
                 if (tmpUser == null) {
                     tmpUser = new User();
+                    Log.e(TAG, "Login: new User", null);
                 }
+                tmpUser.setLastSyncTimestamp(new Date(0));
                 // 若成功，更新/插入 user
                 if (jsonObject.getBoolean("success")){
                     tmpUser.setUserID(JSONObject.parseObject(jsonObject.getString("data")).getString("uuid"));

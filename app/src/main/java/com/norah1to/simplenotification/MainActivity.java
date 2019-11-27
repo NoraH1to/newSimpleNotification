@@ -23,6 +23,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.norah1to.simplenotification.Adapter.TodoListAdapter;
 import com.norah1to.simplenotification.Entity.User;
 import com.norah1to.simplenotification.Http.HttpHelper;
+import com.norah1to.simplenotification.Settings.SharePreferencesHelper;
 import com.norah1to.simplenotification.ViewModel.TodoViewModel;
 
 import java.util.Date;
@@ -73,6 +74,7 @@ public class MainActivity extends BaseActivity {
 //                    adapter.setTodos(todos);
 //                    break;
 //            }
+            Log.d(TAG, "onCreate: updataList" + todos.size());
             adapter.setTodos(todos);
         });
 
@@ -155,7 +157,7 @@ public class MainActivity extends BaseActivity {
             new Thread(() -> {
                 // TODO: 获取数据
                 User tmpUser = userViewModel.getmUser().getValue();
-                if (tmpUser == null) {
+                if (SharePreferencesHelper.getUserState(this) == null) {
                     Intent intent = new Intent(this, LoginActivity.class);
                     handler.post(() -> {
                         Toast.makeText(this, "请先登入", Toast.LENGTH_SHORT).show();

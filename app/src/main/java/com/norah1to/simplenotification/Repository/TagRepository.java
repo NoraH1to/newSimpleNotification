@@ -41,6 +41,10 @@ public class TagRepository {
         return mTagDao.deleteTagByName(name, new Date().getTime());
     }
 
+    public int deleteAll() {
+        return mTagDao.deleteAll();
+    }
+
     public void insert (Tag... tags) {
         new TagRepository.insertAsyncTask(mTagDao).execute(tags);
     }

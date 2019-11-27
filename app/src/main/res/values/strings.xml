@@ -57,4 +57,10 @@
 
     <string name="menu_main_done">已完成的</string>
 
+    <string name="dialog_confirm_logout_title">确认要登出吗？</string>
+    <string name="dialog_confirm_logout_message">会清空所有数据，未同步的会丢失</string>
+
+    <string name="confirm">确认</string>
+    <string name="cancel">取消</string>
+
 </resources>

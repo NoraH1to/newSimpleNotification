@@ -27,6 +27,9 @@ public interface TagDao {
     @Query("UPDATE tag_table SET deleted = :deleteState WHERE tag_id = :tagID")
     int deleteTag(String tagID, int deleteState);
 
+    @Query("DELETE FROM tag_table")
+    int deleteAll();
+
     @Query("SELECT * FROM tag_table WHERE tag_id = :tagID")
     Tag getTag(String tagID);
 

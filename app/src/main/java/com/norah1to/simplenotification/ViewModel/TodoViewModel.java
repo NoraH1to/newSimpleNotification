@@ -39,6 +39,14 @@ public class TodoViewModel extends AndroidViewModel {
         mTagRepository.insert(tags);
     }
 
+    public int deleteAllTag() {
+        return mTagRepository.deleteAll();
+    }
+
+    public int deleteAllTodo() {
+        return mTodoRepository.deleteAll();
+    }
+
     public List<Tag> getCreatedTags (long lastSyncTimestamp) {
         return mTagRepository.getCreated(lastSyncTimestamp);
     }

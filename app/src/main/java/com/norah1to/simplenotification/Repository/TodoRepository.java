@@ -39,6 +39,10 @@ public class TodoRepository {
         return mTodoDao.deleteTodo(todoID, deleteState);
     }
 
+    public int deleteAll() {
+        return mTodoDao.deleteAll();
+    }
+
     public void insert (Todo... todo) {
         new insertAsyncTask(mTodoDao).execute(todo);
     }
