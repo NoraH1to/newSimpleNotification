@@ -39,9 +39,26 @@ public class TodoRepository {
         return mTodoDao.deleteTodo(todoID, deleteState);
     }
 
-    public void insert (Todo todo) {
+    public void insert (Todo... todo) {
         new insertAsyncTask(mTodoDao).execute(todo);
     }
+
+    public void update (Todo todo) {
+        mTodoDao.updateTodo(todo);
+    }
+
+    public List<Todo> getCreated (long lastSyncTimestamp) {
+        return mTodoDao.getCreateTodos(lastSyncTimestamp);
+    }
+
+    public List<Todo> getModified (long lastSyncTimestamp) {
+        return mTodoDao.getModifiedTodos(lastSyncTimestamp);
+    }
+
+    public List<Todo> getDeleted (long lastSyncTimestamp) {
+        return mTodoDao.getDeletedTodos(lastSyncTimestamp);
+    }
+
 
     // 异步操作数据库
     private static class insertAsyncTask extends AsyncTask<Todo, Void, Void> {
@@ -55,7 +72,7 @@ public class TodoRepository {
         @Override
         protected Void doInBackground(final Todo... params) {
             // 异步插入
-            mAsyncTaskDao.insert(params[0]);
+            mAsyncTaskDao.insert(params);
             return null;
         }
     }

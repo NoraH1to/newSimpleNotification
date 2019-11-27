@@ -1,23 +1,19 @@
 package com.norah1to.simplenotification;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.menu.ActionMenuItemView;
-import androidx.appcompat.widget.PopupMenu;
-import androidx.core.content.ContextCompat;
-import androidx.lifecycle.ViewModelProviders;
-
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.DatePicker;
-import android.widget.TimePicker;
+import android.widget.Toast;
+
+import androidx.appcompat.view.menu.ActionMenuItemView;
+import androidx.appcompat.widget.PopupMenu;
+import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.chip.Chip;
@@ -37,9 +33,7 @@ import com.norah1to.simplenotification.ViewModel.TodoViewModel;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 public class MakeTodoActivity extends BaseActivity {
@@ -237,11 +231,12 @@ public class MakeTodoActivity extends BaseActivity {
         }
         todo.setContent(contentInput.getText().toString());
         todo.setNoticeTimeStamp(makeTodoViewModel.getmData().getValue());
-        todo.setNoticeTimeStamp(new Date());
+        todo.setModifiedTimeStamp(new Date());
+        todo.setCompletedTimeStamp(null);
         todo.setTags(new ArrayList<Tag>(makeTodoViewModel.getmAddTags().getValue()));
         if (todo.getCreatedTimeStamp() == null)
             todo.setCreatedTimeStamp(new Date());
-        todoViewModel.insert(todo);
+        todoViewModel.insertTodo(todo);
         finish();
     }
 
@@ -253,6 +248,10 @@ public class MakeTodoActivity extends BaseActivity {
         List<Tag> tagList = makeTodoViewModel.getmTags().getValue();
         // 为空的时候不处理
         if (tagList == null || tagList.size() == 0) {
+            Toast.makeText(this,
+                    this.getResources().getString(R.string.toast_make_todo_no_tags),
+                    Toast.LENGTH_SHORT)
+                    .show();
             return;
         }
         for (Tag tag : tagList) {

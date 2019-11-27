@@ -1,6 +1,15 @@
 package com.norah1to.simplenotification;
 
-import androidx.appcompat.app.AppCompatActivity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
+
 import androidx.appcompat.view.ActionMode;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
@@ -9,21 +18,20 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.norah1to.simplenotification.Adapter.TodoListAdapter;
+import com.norah1to.simplenotification.Entity.User;
+import com.norah1to.simplenotification.Http.HttpHelper;
 import com.norah1to.simplenotification.ViewModel.TodoViewModel;
+
+import java.util.Date;
 
 public class MainActivity extends BaseActivity {
 
     private static final String TAG = "MainActivity";
+
+    private Handler handler = new Handler(Looper.getMainLooper());
 
     public static TodoViewModel mtodoViewModel;
 
@@ -48,22 +56,24 @@ public class MainActivity extends BaseActivity {
         // 初始化 todos 的 viewModel，监听 todos，实时更新列表数据
         mtodoViewModel = ViewModelProviders.of(this).get(TodoViewModel.class);
         mtodoViewModel.getAllTodos().observe(this, todos -> {
-            switch (adapter.actionModeState) {
-                case TodoListAdapter.STATE_ACTION_MODE_OFF:
-                    if (first){
-                        adapter.setTodos(todos);
-                        first = false;
-                    } else if (adapter.getItemCount() == todos.size()) {
-                        adapter.setTodos(todos);
-                    } else {
-                        adapter.addTodo(todos.get(0));
-                        recyclerView.scrollToPosition(0);
-                    }
-                    break;
-                case TodoListAdapter.STATE_ACTION_MODE_ON:
-                    adapter.setTodos(todos);
-                    break;
-            }
+//            switch (adapter.actionModeState) {
+//                case TodoListAdapter.STATE_ACTION_MODE_OFF:
+//                    if (first) {
+//                        adapter.setTodos(todos);
+//                        first = false;
+//                    }
+//                    else if (adapter.getItemCount() < todos.size()){
+//                        adapter.addTodo(todos.get(0));
+//                        recyclerView.scrollToPosition(0);
+//                    } else {
+//                        adapter.setTodos(todos);
+//                    }
+//                    break;
+//                case TodoListAdapter.STATE_ACTION_MODE_ON:
+//                    adapter.setTodos(todos);
+//                    break;
+//            }
+            adapter.setTodos(todos);
         });
 
 
@@ -111,6 +121,10 @@ public class MainActivity extends BaseActivity {
                     Intent intent1 = new Intent(this, TagActivity.class);
                     startActivity(intent1);
                     return true;
+                case R.id.bottom_app_bar_menu_done:
+                    Intent intent2 = new Intent(this, FinishTodosActivity.class);
+                    startActivity(intent2);
+                    return true;
                 default:
                     return false;
             }
@@ -140,7 +154,34 @@ public class MainActivity extends BaseActivity {
         swipeRefreshLayout.setOnRefreshListener(() -> {
             new Thread(() -> {
                 // TODO: 获取数据
+                User tmpUser = userViewModel.getmUser().getValue();
+                if (tmpUser == null) {
+                    Intent intent = new Intent(this, LoginActivity.class);
+                    handler.post(() -> {
+                        Toast.makeText(this, "请先登入", Toast.LENGTH_SHORT).show();
+                        swipeRefreshLayout.setRefreshing(false);
+                    });
+                    startActivity(intent);
+                    return;
+                }
+                long time = tmpUser.getLastSyncTimestamp().getTime();
+                HttpHelper.ResultBean resultBean = HttpHelper.syncData(handler,
+                        mtodoViewModel.getCreatedTodos(time),
+                        mtodoViewModel.getModifiedTodos(time),
+                        mtodoViewModel.getDeletedTodos(time),
+                        mtodoViewModel.getCreatedTags(time),
+                        mtodoViewModel.getModifiedTags(time),
+                        mtodoViewModel.getDeletedTags(time));
                 swipeRefreshLayout.setRefreshing(false);
+                handler.post(() -> {
+                    if (resultBean.isSuccess()) {
+                        tmpUser.setLastSyncTimestamp(new Date());
+                        userViewModel.insert(tmpUser);
+                        Toast.makeText(this, "同步成功", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(this, "同步失败", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }).start();
         });
     }
@@ -172,7 +213,7 @@ public class MainActivity extends BaseActivity {
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.menuitem_main_action_mode_delete:
-                    adapter.deleteSeletedItems();
+                    adapter.deleteSeletedItems(handler);
                     break;
             }
             return false;

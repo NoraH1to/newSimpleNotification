@@ -8,7 +8,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.chip.Chip;
@@ -16,7 +15,6 @@ import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.textfield.TextInputEditText;
 import com.norah1to.simplenotification.Entity.Tag;
 import com.norah1to.simplenotification.Entity.User;
-import com.norah1to.simplenotification.Settings.SharePreferencesHelper;
 import com.norah1to.simplenotification.Util.ChipUtil;
 import com.norah1to.simplenotification.ViewModel.TagViewModel;
 
@@ -54,8 +52,9 @@ public class TagActivity extends BaseActivity {
                 if ((event != null && KeyEvent.KEYCODE_ENTER == event.getKeyCode() &&
                         KeyEvent.ACTION_DOWN == event.getAction())) {
                     Tag tag = new Tag();
-                    tag.setCreatedTimeStamp(new Date());
-                    tag.setModifiedTimeStamp(new Date());
+                    Date date = new Date(System.currentTimeMillis());
+                    tag.setCreatedTimeStamp(date);
+                    tag.setModifiedTimeStamp(date);
                     tag.setName(v.getText().toString());
                     User tmpUser = BaseActivity.userViewModel.getmUser().getValue();
                     try {

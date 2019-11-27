@@ -29,4 +29,10 @@
         android:title="@string/menu_main_tags"
         android:icon="@drawable/ic_tag_black_24dp"
         app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/bottom_app_bar_menu_done"
+        android:title="@string/menu_main_done"
+        android:icon="@drawable/ic_done_grey_24dp"
+        app:showAsAction="ifRoom"/>
 </menu>

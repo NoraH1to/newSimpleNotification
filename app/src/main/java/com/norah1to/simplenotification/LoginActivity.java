@@ -1,7 +1,5 @@
 package com.norah1to.simplenotification;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,6 +7,8 @@ import android.os.Looper;
 import android.util.Log;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;

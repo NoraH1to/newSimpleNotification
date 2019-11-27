@@ -42,4 +42,19 @@
     <string name="text_login_title">登入</string>
     <string name="login_confirm_password_input_hint">确认密码 8-32位</string>
     <string name="btn_user_center_logout">登出</string>
+
+    <string name="toast_http_net_err">网络请求出现问题</string>
+    <string name="toast_http_login_success">登入成功</string>
+    <string name="toast_http_login_fail">登入失败</string>
+    <string name="toast_http_register_success">注册成功</string>
+    <string name="toast_http_register_fail">注册失败</string>
+    <string name="toast_http_logout_success">登出成功</string>
+    <string name="toast_http_logout_fail">登出失败</string>
+    <string name="toast_http_sync_success">同步成功</string>
+    <string name="toast_http_sync_fail">同步失败</string>
+
+    <string name="toast_make_todo_no_tags">没有标签</string>
+
+    <string name="menu_main_done">已完成的</string>
+
 </resources>

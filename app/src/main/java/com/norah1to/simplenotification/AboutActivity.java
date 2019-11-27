@@ -1,7 +1,5 @@
 package com.norah1to.simplenotification;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 
 public class AboutActivity extends BaseActivity {

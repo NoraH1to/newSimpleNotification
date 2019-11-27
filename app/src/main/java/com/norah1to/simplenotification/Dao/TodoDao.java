@@ -16,7 +16,7 @@ import java.util.List;
 public interface TodoDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insert(Todo todo);
+    void insert(Todo... todo);
 
     @Query("DELETE FROM todo_table")
     int deleteAll();
@@ -27,8 +27,11 @@ public interface TodoDao {
     @Delete
     int deleteTodos(List<Todo> todos);
 
-    @Query("SELECT * FROM todo_table WHERE deleted != 1 ORDER BY sort_order DESC, created_timestamp DESC")
+    @Query("SELECT * FROM todo_table WHERE deleted != 1 AND completed_timestamp IS NULL ORDER BY sort_order DESC, created_timestamp DESC")
     LiveData<List<Todo>> getAllTodos();
+
+    @Query("SELECT * FROM todo_table WHERE deleted != 1 AND completed_timestamp IS NOT NULL ORDER BY sort_order DESC, created_timestamp DESC")
+    LiveData<List<Todo>> getAllFinishTodos();
 
     @Query("SELECT * FROM todo_table WHERE todo_id=:todoID")
     Todo getTodo(String todoID);

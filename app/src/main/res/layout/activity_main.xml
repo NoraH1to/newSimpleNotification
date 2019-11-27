@@ -19,12 +19,12 @@
                 android:id="@+id/list_main"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:overScrollMode="never" />
+                android:overScrollMode="ifContentScrolls" />
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-
-
     </androidx.appcompat.widget.LinearLayoutCompat>
+
+
 
     <com.google.android.material.bottomappbar.BottomAppBar
         app:navigationIcon="@drawable/ic_menu_black_24dp"
@@ -41,6 +41,8 @@
 
     </com.google.android.material.bottomappbar.BottomAppBar>
 
+
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_main"
         android:layout_width="wrap_content"
@@ -48,7 +50,5 @@
         app:layout_anchor="@id/bottom_bar"
         app:srcCompat="@drawable/ic_add_black_24dp"
         app:hideMotionSpec="@anim/bottom_sheet_slide_in"/>
-
-
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

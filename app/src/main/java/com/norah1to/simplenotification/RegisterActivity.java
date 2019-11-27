@@ -1,11 +1,11 @@
 package com.norah1to.simplenotification;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
@@ -48,7 +48,9 @@ public class RegisterActivity extends AppCompatActivity {
                         handler);
                 handler.post(() -> {
                     Toast.makeText(this, result.getMessage(), Toast.LENGTH_SHORT).show();
-                    finish();
+                    if (result.isSuccess()) {
+                        finish();
+                    }
                 });
             });
             HttpRequestThread.start();

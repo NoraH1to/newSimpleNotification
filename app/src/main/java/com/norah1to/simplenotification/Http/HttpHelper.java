@@ -8,8 +8,13 @@ import androidx.annotation.NonNull;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.norah1to.simplenotification.BaseActivity;
+import com.norah1to.simplenotification.Entity.Tag;
+import com.norah1to.simplenotification.Entity.Todo;
 import com.norah1to.simplenotification.Entity.User;
+import com.norah1to.simplenotification.MainActivity;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
@@ -36,17 +41,98 @@ public class HttpHelper {
 
     private static final String MSG_SYNC_SUCCESS = "同步完成";
     private static final String MSG_SYNC_FAIL = "同步失败";
+    private static final String MSG_SYNC_UNLOGIN = "未登入";
 
     private static final String ApiHost = "http://todo.wegfan.cn/api/";
 
     private static final String ROUTE_LOGIN = "users/auth/";
     private static final String ROUTE_REGISTER = "users/";
     private static final String ROUTE_LOGOUT = "users/logout/";
+    private static final String ROUTE_SYNC_TODO = "todos/";
+    private static final String ROUTE_SYNC_TAG = "tags/";
 
 
     // 同步所有内容
-    public static ResultBean syncData(Handler mainHandel) {
+    public static ResultBean syncData(
+            Handler mainHandel,
+            List<Todo> createTodoList, List<Todo> updateTodoList, List<Todo> deleteTodoList,
+            List<Tag> createTagList, List<Tag> updateTagList, List<Tag> deleteTagList) {
         // TODO: SYNC
+
+        // 判断是否登入
+        User user = BaseActivity.userViewModel.getmUser().getValue();
+        if (user == null) {
+            return new ResultBean(false, MSG_SYNC_UNLOGIN);
+        }
+
+        /**
+         *  同步Todo
+         */
+        // 封装要传输的数据
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("last_sync_timestamp", user.getLastSyncTimestamp());
+        jsonObject.put("added", createTodoList);
+        jsonObject.put("updated", updateTodoList);
+        jsonObject.put("deleted", deleteTodoList);
+        Response response = baseRequest(ROUTE_SYNC_TODO, jsonObject.toJSONString());
+        try {
+            if (response != null) {
+                JSONObject resultSyncTodo = JSONObject.parseObject(response.body().string());
+                if (resultSyncTodo.getBoolean("success")) {
+                    List<Todo> insertTodoList = new ArrayList<Todo>();
+                    JSONObject resultDataJson = JSON.parseObject(
+                            resultSyncTodo.getString("data"));
+                    insertTodoList.addAll(
+                            JSON.parseArray(resultDataJson.getString("added"), Todo.class));
+                    insertTodoList.addAll(
+                            JSON.parseArray(resultDataJson.getString("updated"), Todo.class));
+                    insertTodoList.addAll(
+                            JSON.parseArray(resultDataJson.getString("deleted"), Todo.class));
+                    MainActivity.mtodoViewModel.insertTodo(
+                            insertTodoList.toArray(new Todo[0]));
+                } else {
+                    return new ResultBean(false, MSG_SYNC_FAIL);
+                }
+            } else {
+                return new ResultBean(false, MSG_SYNC_FAIL);
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "syncDataTodo: ", e);
+        }
+
+
+        /**
+         * 同步Tag
+         */
+        // 封装要传输的数据
+        JSONObject jsonObject1 = new JSONObject();
+        jsonObject1.put("last_sync_timestamp", user.getLastSyncTimestamp());
+        jsonObject1.put("added", createTagList);
+        jsonObject1.put("updated", updateTagList);
+        jsonObject1.put("deleted", deleteTagList);
+        Response response1 = baseRequest(ROUTE_SYNC_TAG, jsonObject1.toJSONString());
+        try {
+            if (response1 != null) {
+                JSONObject resultSyncTag = JSONObject.parseObject(response1.body().string());
+                if (resultSyncTag.getBoolean("success")) {
+                    List<Tag> insertTagList = new ArrayList<Tag>();
+                    JSONObject resultDataJson = JSON.parseObject(
+                            resultSyncTag.getString("data"));
+                    insertTagList.addAll(
+                            JSON.parseArray(resultDataJson.getString("added"), Tag.class));
+                    insertTagList.addAll(
+                            JSON.parseArray(resultDataJson.getString("updated"), Tag.class));
+                    insertTagList.addAll(
+                            JSON.parseArray(resultDataJson.getString("deleted"), Tag.class));
+                    MainActivity.mtodoViewModel.insertTag(
+                            insertTagList.toArray(new Tag[0]));
+                    return new ResultBean(true, MSG_SYNC_SUCCESS);
+                }
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "syncDataTag: ", e);
+        }
+
         return new ResultBean(false, MSG_SYNC_FAIL);
     }
 
@@ -57,6 +143,7 @@ public class HttpHelper {
         try {
             if (response != null) {
                 JSONObject jsonObject = JSONObject.parseObject(response.body().string());
+                // 成功删除本地用户信息
                 if (jsonObject.getBoolean("success")) {
                     BaseActivity.userViewModel.deleteUser();
                     return new ResultBean(true, MSG_LOGOUT_SUCCESS);
@@ -77,7 +164,6 @@ public class HttpHelper {
             if (response != null) {
                 JSONObject jsonObject = JSONObject.parseObject(response.body().string());
                 if (jsonObject.getBoolean("success")){
-
                     return new ResultBean(true, MSG_REGISTER_SUCCESS);
                 } else {
                     return new ResultBean(false, MSG_REGISTER_FAIL);
@@ -95,10 +181,12 @@ public class HttpHelper {
         try {
             if (response != null) {
                 JSONObject jsonObject = JSONObject.parseObject(response.body().string());
+                // 获得当前的 user 状态，没有则新建
                 User tmpUser = BaseActivity.userViewModel.getmUser().getValue();
                 if (tmpUser == null) {
                     tmpUser = new User();
                 }
+                // 若成功，更新/插入 user
                 if (jsonObject.getBoolean("success")){
                     tmpUser.setUserID(JSONObject.parseObject(jsonObject.getString("data")).getString("uuid"));
                     tmpUser.setAccount(userBean.account);
@@ -127,8 +215,8 @@ public class HttpHelper {
     private static Response baseRequest(String route , @NonNull String jsonStr) {
         try {
             OkHttpClient client = new OkHttpClient.Builder()
-                    .callTimeout(6_000, TimeUnit.MILLISECONDS)
-                    .connectTimeout(6_000, TimeUnit.MILLISECONDS)
+                    .callTimeout(10_000, TimeUnit.MILLISECONDS)
+                    .connectTimeout(10_000, TimeUnit.MILLISECONDS)
                     .readTimeout(10_000, TimeUnit.MILLISECONDS)
                     .writeTimeout(10_000, TimeUnit.MILLISECONDS)
                     .build();

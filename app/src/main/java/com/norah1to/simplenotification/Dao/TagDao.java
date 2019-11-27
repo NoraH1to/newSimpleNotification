@@ -16,7 +16,7 @@ import java.util.List;
 public interface TagDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insert(Tag tag);
+    void insert(Tag... tag);
 
     @Query("SELECT * FROM tag_table WHERE deleted != 1")
     LiveData<List<Tag>> getAllTags();

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.BlurMaskFilter;
 import android.graphics.Typeface;
+import android.os.Handler;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
@@ -32,29 +33,12 @@ import com.norah1to.simplenotification.R;
 import com.norah1to.simplenotification.Util.DateUtil;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoViewHolder> {
-
-    private static final String TAG = "TodoListAdapter";
-
-    public static final int STATE_ACTION_MODE_ON = 1;
-    public static final int STATE_ACTION_MODE_OFF = 0;
-
-    // 代理
-    private Proxy mProxy;
-
-
-    // 模式
-    public int actionModeState = STATE_ACTION_MODE_OFF;
-
-
-    // 被选中的列表
-    private Set<Integer> selectIndexs = new HashSet<Integer>() {
-    };
-
 
     class TodoViewHolder extends  RecyclerView.ViewHolder {
         // 输入的内容
@@ -88,11 +72,29 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoVi
     }
 
 
+    private static final String TAG = "TodoListAdapter";
+
+
     private final LayoutInflater mInflater;
 
 
     // 数据列表
     private List<Todo> mTodos;
+
+
+    public static final int STATE_ACTION_MODE_ON = 1;
+    public static final int STATE_ACTION_MODE_OFF = 0;
+
+    // 代理
+    private Proxy mProxy;
+
+
+    // 模式
+    public int actionModeState = STATE_ACTION_MODE_OFF;
+
+
+    // 被选中的列表
+    private Set<Integer> selectIndexs = new HashSet<Integer>() {};
 
 
     public TodoListAdapter(Context context) {
@@ -118,8 +120,8 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoVi
             switch (actionModeState) {
                 case STATE_ACTION_MODE_OFF:
                     // 隐藏 radiobtn
-                    holder.radioButton.setVisibility(View.GONE);
                     holder.radioButton.setChecked(false);
+                    holder.radioButton.setVisibility(View.GONE);
                     // 显示 checkbox
                     holder.checkBox.setVisibility(View.VISIBLE);
                     break;
@@ -130,6 +132,18 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoVi
                     holder.checkBox.setVisibility(View.GONE);
                     break;
             }
+
+            // 设置 checkbox 点击监听，完成按钮
+            holder.checkBox.setOnCheckedChangeListener(((buttonView, isChecked) -> {
+                if (isChecked) {
+                    Thread thread = new Thread(() -> {
+                        current.setCompletedTimeStamp(new Date());
+                        MainActivity.mtodoViewModel.update(current);
+                    });
+                    thread.start();
+                }
+                buttonView.setChecked(false);
+            }));
 
             // 设置点击监听
             holder.itemView.setOnClickListener(v -> {
@@ -252,7 +266,7 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoVi
 
     // 设置数据列表
     public void setTodos(List<Todo> todos) {
-        mTodos = todos;
+        this.mTodos = todos;
         notifyDataSetChanged();
     }
 
@@ -286,13 +300,16 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoVi
 
 
     // 删除所选项目
-    public void deleteSeletedItems() {
+    public void deleteSeletedItems(Handler mainHandler) {
         for (Integer integer : this.selectIndexs) {
             Log.d(TAG, "deleteSeletedItems: index" + integer.intValue());
             Log.d(TAG, "deleteSeletedItems: mTodossize: " + mTodos.size());
             new Thread(() -> {
                 Todo tmpTodo = mTodos.get(integer.intValue());
                 MainActivity.mtodoViewModel.delete(tmpTodo.getTodoID(), Todo.STATE_DELETED);
+                mainHandler.post(() -> {
+                    notifyDataSetChanged();
+                });
             }).start();
         }
         selectIndexs.clear();

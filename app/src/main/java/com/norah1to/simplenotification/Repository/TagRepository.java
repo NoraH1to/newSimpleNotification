@@ -41,8 +41,8 @@ public class TagRepository {
         return mTagDao.deleteTagByName(name, new Date().getTime());
     }
 
-    public void insert (Tag tag) {
-        new TagRepository.insertAsyncTask(mTagDao).execute(tag);
+    public void insert (Tag... tags) {
+        new TagRepository.insertAsyncTask(mTagDao).execute(tags);
     }
 
     public Tag getTag (String tagID) {
@@ -51,6 +51,18 @@ public class TagRepository {
 
     public Tag getTagByName (String name) {
         return mTagDao.getTagByName(name);
+    }
+
+    public List<Tag> getCreated (long lastSyncTimestamp) {
+        return mTagDao.getCreateTags(lastSyncTimestamp);
+    }
+
+    public List<Tag> getModified (long lastSyncTimestamp) {
+        return mTagDao.getModifiedTags(lastSyncTimestamp);
+    }
+
+    public List<Tag> getDeleted (long lastSyncTimestamp) {
+        return mTagDao.getDeletedTags(lastSyncTimestamp);
     }
 
     // 异步操作数据库
@@ -65,7 +77,7 @@ public class TagRepository {
         @Override
         protected Void doInBackground(final Tag... params) {
             // 异步把数据写入数据库
-            mAsyncTaskDao.insert(params[0]);
+            mAsyncTaskDao.insert(params);
             return null;
         }
     }
