@@ -51,20 +51,28 @@ public class TagActivity extends BaseActivity {
                 // 监听输入时的回车键
                 if ((event != null && KeyEvent.KEYCODE_ENTER == event.getKeyCode() &&
                         KeyEvent.ACTION_DOWN == event.getAction())) {
-                    Tag tag = new Tag();
-                    Date date = new Date(System.currentTimeMillis());
-                    tag.setCreatedTimeStamp(date);
-                    tag.setModifiedTimeStamp(date);
-                    tag.setName(v.getText().toString());
-                    User tmpUser = BaseActivity.userViewModel.getmUser().getValue();
-                    try {
-                        tagViewModel.insert(tag);
-                        tagGroup.addView(ChipUtil.createChip(v.getContext(), v.getText().toString(), getMenuCloseClickListener()));
-                    } catch (Exception e) {
-                        Log.d(TAG, "onEditorAction: " + e.toString());
-                    }
-                    // 清空输入框
-                    v.setText(null);
+
+                    new Thread(() -> {
+                        Tag tag = tagViewModel.getTagByName(v.getText().toString());
+                        if (tag == null) {
+                            tag = new Tag();
+                            tag.setName(v.getText().toString());
+                        }
+                        tag.setDeleted(Tag.STATE_NOT_DELETED);
+                        Date date = new Date(System.currentTimeMillis());
+                        tag.setModifiedTimeStamp(date);
+                        Tag finalTag = tag;
+                        handler.post(() -> {
+                            try {
+                                tagViewModel.insert(finalTag);
+                                tagGroup.addView(ChipUtil.createChip(v.getContext(), v.getText().toString(), getMenuCloseClickListener()));
+                                // 清空输入框
+                                v.setText(null);
+                            } catch (Exception e) {
+                                Log.d(TAG, "onEditorAction: " + e.toString());
+                            }
+                        });
+                    }).start();
                     return true;
                 }
                 return false;

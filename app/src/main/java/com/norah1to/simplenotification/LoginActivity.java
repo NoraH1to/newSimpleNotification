@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Toast;
@@ -53,7 +55,7 @@ public class LoginActivity extends AppCompatActivity {
             httpRequestThread = new Thread(() -> {
                 HttpHelper.ResultBean result = HttpHelper.Login(
                         new HttpHelper.UserBean(inputAccount.getText().toString(),
-                        inputPassword.getText().toString()),
+                                inputPassword.getText().toString()),
                         handler);
                 // 执行完后请求主线程返回结果提示
                 handler.post(() -> {
@@ -73,13 +75,15 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        // 设置输入密码框的 done 事件
         inputPassword.setOnEditorActionListener(((v, actionId, event) -> {
             switch (actionId) {
                 case EditorInfo.IME_ACTION_DONE:
                     btnLogin.performClick();
-                    break;
+                    return true;
+                default:
+                    return false;
             }
-            return true;
         }));
     }
 

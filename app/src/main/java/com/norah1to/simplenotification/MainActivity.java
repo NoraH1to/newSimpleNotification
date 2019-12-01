@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.view.ActionMode;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
@@ -41,6 +42,8 @@ public class MainActivity extends BaseActivity {
     private RecyclerView recyclerView;
     private TodoListAdapter adapter;
     private LinearLayoutManager linearLayoutManager;
+
+    private LinearLayoutCompat listBackground;
 
     private BottomAppBar bottomAppBar;
 
@@ -75,8 +78,17 @@ public class MainActivity extends BaseActivity {
 //                    break;
 //            }
             Log.d(TAG, "onCreate: updataList" + todos.size());
+            if (todos.size() == 0) {
+                listBackground.setVisibility(View.VISIBLE);
+            } else {
+                listBackground.setVisibility(View.GONE);
+            }
             adapter.setTodos(todos);
         });
+
+
+        // 初始化列表空背景
+        listBackground = (LinearLayoutCompat) findViewById(R.id.linelayout_main_list_background);
 
 
         // 初始化列表
@@ -155,7 +167,12 @@ public class MainActivity extends BaseActivity {
         ));
         swipeRefreshLayout.setOnRefreshListener(() -> {
             new Thread(() -> {
-                // TODO: 获取数据
+                // sleep 3s 如果刚刚登入完因为插入用户是异步操作，可能会不能立刻获取到用户
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 User tmpUser = userViewModel.getmUser().getValue();
                 if (SharePreferencesHelper.getUserState(this) == null) {
                     Intent intent = new Intent(this, LoginActivity.class);

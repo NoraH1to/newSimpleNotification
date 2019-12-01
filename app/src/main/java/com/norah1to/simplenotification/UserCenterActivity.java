@@ -1,6 +1,7 @@
 package com.norah1to.simplenotification;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -11,7 +12,9 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textview.MaterialTextView;
 import com.norah1to.simplenotification.Http.HttpHelper;
+import com.norah1to.simplenotification.Settings.SharePreferencesHelper;
 
 public class UserCenterActivity extends AppCompatActivity {
 
@@ -19,17 +22,34 @@ public class UserCenterActivity extends AppCompatActivity {
 
     private Thread HttpRequestThread;
 
+    private MaterialTextView textUserAccount;
+
     private MaterialButton btnLogout;
+
+    private MaterialButton btnGotoChangePassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_center);
 
-        // 登出
+        // 用户账号显示
+        textUserAccount = (MaterialTextView) findViewById(R.id.text_user_center_user_account);
+        textUserAccount.setText(SharePreferencesHelper.getUserState(this));
+
+
+        // 登出按钮
         btnLogout = (MaterialButton) findViewById(R.id.btn_user_center_logout);
         btnLogout.setOnClickListener(v -> {
             showConfirmLogoutDialog();
+        });
+
+
+        // 修改密码按钮
+        btnGotoChangePassword = (MaterialButton) findViewById(R.id.btn_user_center_change_password);
+        btnGotoChangePassword.setOnClickListener(v -> {
+            Intent intent = new Intent(this, ChangePasswordActivity.class);
+            startActivity(intent);
         });
     }
 

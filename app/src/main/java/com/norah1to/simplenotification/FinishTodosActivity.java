@@ -10,6 +10,7 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.ActionMode;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,6 +25,8 @@ public class FinishTodosActivity extends AppCompatActivity {
     private Handler handler = new Handler(Looper.getMainLooper());
 
     private RecyclerView recyclerView;
+
+    private LinearLayoutCompat listBackground;
 
     private FinishTodoListAdapter adapter;
 
@@ -42,7 +45,6 @@ public class FinishTodosActivity extends AppCompatActivity {
         // 初始化 viewmodel
         mFinishTodoViewModel = ViewModelProviders.of(this).get(FinishTodoViewModel.class);
         mFinishTodoViewModel.getAllTodos().observe(this, todos -> {
-            // Todo: 列表更新
             Log.d(TAG, "onCreate: ");
 //            switch (adapter.actionModeState) {
 //                case FinishTodoListAdapter.STATE_ACTION_MODE_OFF:
@@ -64,12 +66,21 @@ public class FinishTodosActivity extends AppCompatActivity {
 //                    adapter.setTodos(todos);
 //                    break;
 //            }
+            if (todos.size() == 0) {
+                listBackground.setVisibility(View.VISIBLE);
+            } else {
+                listBackground.setVisibility(View.GONE);
+            }
             adapter.setTodos(todos);
         });
 
 
         // 初始化适配器
         adapter = new FinishTodoListAdapter(this);
+
+
+        // 初始化列表空背景
+        listBackground = (LinearLayoutCompat) findViewById(R.id.linelayout_finish_todo_list_background);
 
 
         // 初始化列表

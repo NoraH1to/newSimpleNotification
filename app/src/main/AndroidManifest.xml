@@ -13,7 +13,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".FinishTodosActivity"></activity>
+        <activity
+            android:name=".ChangePasswordActivity"
+            android:windowSoftInputMode="adjustResize"/>
+        <activity android:name=".FinishTodosActivity" />
         <activity android:name=".UserCenterActivity" />
         <activity
             android:name=".RegisterActivity"

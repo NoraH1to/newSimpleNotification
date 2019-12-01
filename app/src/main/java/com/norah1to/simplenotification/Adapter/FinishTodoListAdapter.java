@@ -108,7 +108,6 @@ public class FinishTodoListAdapter extends RecyclerView.Adapter<FinishTodoListAd
 
     @Override
     public void onBindViewHolder(@NonNull FinishTodoViewHolder holder, int position) {
-        // Todo: 绑定数据
         Log.d(TAG, "onBindViewHolder: " + position);
         if (mTodos != null) {
             Todo current = mTodos.get(position);

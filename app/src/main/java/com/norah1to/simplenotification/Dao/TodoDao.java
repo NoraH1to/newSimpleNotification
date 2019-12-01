@@ -21,7 +21,7 @@ public interface TodoDao {
     @Query("DELETE FROM todo_table")
     int deleteAll();
 
-    @Query("UPDATE todo_table SET deleted = :deleteState WHERE todo_id = :todoID")
+    @Query("UPDATE todo_table SET deleted = :deleteState, modified_timestamp = strftime('%s','now')*1000 WHERE todo_id = :todoID")
     int deleteTodo(String todoID, int deleteState);
 
     @Delete

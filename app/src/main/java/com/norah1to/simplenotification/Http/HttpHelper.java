@@ -44,6 +44,9 @@ public class HttpHelper {
     private static final String MSG_SYNC_FAIL = "同步失败";
     private static final String MSG_SYNC_UNLOGIN = "未登入";
 
+    private static final String MSG_CHANGE_PASSWORD_SUCCESS = "更改密码成功";
+    private static final String MSG_CHANGE_PASSWORD_FAIL = "更改密码失败";
+
     private static final String ApiHost = "http://todo.wegfan.cn/api/";
 
     private static final String ROUTE_LOGIN = "users/auth/";
@@ -51,6 +54,29 @@ public class HttpHelper {
     private static final String ROUTE_LOGOUT = "users/logout/";
     private static final String ROUTE_SYNC_TODO = "todos/";
     private static final String ROUTE_SYNC_TAG = "tags/";
+    private static final String ROUTE_CHANGE_PASSWORD = "users/change/";
+
+
+    // 更改密码
+    public static ResultBean changePssword(
+            Handler mainHandel,
+            ChangePasswordBean changePasswordBean) {
+        Response response = baseRequest(
+                ROUTE_CHANGE_PASSWORD, JSON.toJSONString(changePasswordBean));
+        try {
+            if (response != null) {
+                JSONObject jsonObject = JSONObject.parseObject(response.body().string());
+                if (jsonObject.getBoolean("success")) {
+                    return new ResultBean(true, MSG_CHANGE_PASSWORD_SUCCESS);
+                } else {
+                    return new ResultBean(false, MSG_CHANGE_PASSWORD_FAIL);
+                }
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "changePssword: ", e);
+        }
+        return new ResultBean(false, MSG_NET_ERR);
+    }
 
 
     // 同步所有内容
@@ -78,6 +104,7 @@ public class HttpHelper {
         jsonObject.put("added", createTodoList);
         jsonObject.put("updated", updateTodoList);
         jsonObject.put("deleted", deleteTodoList);
+        Log.d(TAG, "syncData: jsonObj: \n" + jsonObject);
         Response response = baseRequest(ROUTE_SYNC_TODO, jsonObject.toJSONString());
         try {
             if (response != null) {
@@ -117,6 +144,7 @@ public class HttpHelper {
         jsonObject1.put("added", createTagList);
         jsonObject1.put("updated", updateTagList);
         jsonObject1.put("deleted", deleteTagList);
+        Log.d(TAG, "syncData: jsonObj1: \n" + jsonObject1);
         Response response1 = baseRequest(ROUTE_SYNC_TAG, jsonObject1.toJSONString());
         try {
             if (response1 != null) {
@@ -142,7 +170,7 @@ public class HttpHelper {
             Log.e(TAG, "syncDataTag: ", e);
         }
 
-        return new ResultBean(false, MSG_SYNC_FAIL);
+        return new ResultBean(false, MSG_NET_ERR);
     }
 
 
@@ -316,6 +344,33 @@ public class HttpHelper {
 
         public void setPassword(String password) {
             this.password = password;
+        }
+    }
+
+    // 用户登录/注册 Bean
+    public static class ChangePasswordBean {
+        public ChangePasswordBean(String oldPassword, String newPassword) {
+            this.oldPassword = oldPassword;
+            this.newPassword = newPassword;
+        }
+
+        private String oldPassword;
+        private String newPassword;
+
+        public String getOldPassword() {
+            return oldPassword;
+        }
+
+        public void setOldPassword(String oldPassword) {
+            this.oldPassword = oldPassword;
+        }
+
+        public String getNewPassword() {
+            return newPassword;
+        }
+
+        public void setNewPassword(String newPassword) {
+            this.newPassword = newPassword;
         }
     }
 }

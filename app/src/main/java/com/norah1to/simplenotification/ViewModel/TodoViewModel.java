@@ -74,7 +74,6 @@ public class TodoViewModel extends AndroidViewModel {
     // 更新一条
     public void update(Todo todo) {
         mTodoRepository.update(todo);
-        // TODO: update res
     }
 
     // 删除一条

@@ -159,7 +159,6 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoVi
                         holder.itemView.getContext().startActivity(intent);
                         break;
                     case STATE_ACTION_MODE_ON:
-                        // TODO:
                         if (mTodos.get(position).isChecked()) {
                             mTodos.get(position).setChecked(false);
                             holder.radioButton.setChecked(false);

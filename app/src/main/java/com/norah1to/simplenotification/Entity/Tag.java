@@ -20,7 +20,6 @@ public class Tag {
     public static final int STATE_NOT_DELETED = 0;
 
     public Tag() {
-        // TODO: tag构造方法
         this.tagID = UUID.randomUUID().toString();
         this.visible = this.STATE_VISIBLE;
         this.createdTimeStamp = new Date();
