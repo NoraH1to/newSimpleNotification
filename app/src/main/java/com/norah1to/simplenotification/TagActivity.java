@@ -14,7 +14,6 @@ import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.textfield.TextInputEditText;
 import com.norah1to.simplenotification.Entity.Tag;
-import com.norah1to.simplenotification.Entity.User;
 import com.norah1to.simplenotification.Util.ChipUtil;
 import com.norah1to.simplenotification.ViewModel.TagViewModel;
 

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">newSimpleNotification</string>
+    <string name="app_name">Todo一下</string>
     <string name="menu_main_search">搜索</string>
     <string name="menu_main_settings">设置</string>
     <string name="what_todo">准备做啥？</string>
@@ -32,6 +32,8 @@
     <string name="attachment_summary_on">Automatically download attachments for incoming emails
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
+
+
     <string name="main_bottom_sheet_unlogin">未登录</string>
     <string name="menu_main_about">关于</string>
     <string name="login_password_input_hint">密码</string>
