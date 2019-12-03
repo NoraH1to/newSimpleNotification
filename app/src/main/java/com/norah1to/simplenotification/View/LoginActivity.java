@@ -1,11 +1,9 @@
-package com.norah1to.simplenotification;
+package com.norah1to.simplenotification.View;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Toast;
@@ -15,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.norah1to.simplenotification.Http.HttpHelper;
+import com.norah1to.simplenotification.R;
 
 public class LoginActivity extends AppCompatActivity {
 

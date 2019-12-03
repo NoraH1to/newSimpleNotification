@@ -7,11 +7,11 @@ import androidx.annotation.NonNull;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.norah1to.simplenotification.BaseActivity;
+import com.norah1to.simplenotification.View.BaseActivity;
 import com.norah1to.simplenotification.Entity.Tag;
 import com.norah1to.simplenotification.Entity.Todo;
 import com.norah1to.simplenotification.Entity.User;
-import com.norah1to.simplenotification.MainActivity;
+import com.norah1to.simplenotification.View.MainActivity;
 
 import java.util.ArrayList;
 import java.util.Date;

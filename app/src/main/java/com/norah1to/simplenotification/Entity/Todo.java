@@ -4,7 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
+
+import com.norah1to.simplenotification.Notification.Notification;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -12,7 +15,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-@Entity(tableName = "todo_table")
+@Entity(tableName = "todo_table",
+        indices = {
+        @Index(value = {"notice_code", "todo_id"}, unique = true)
+})
 public class Todo implements Serializable {
 
     public static final String TAG = "TODO_OBJ";
@@ -36,6 +42,11 @@ public class Todo implements Serializable {
     public static final int PROIORITY_MID = 100;
     public static final int PROIORITY_LOW = 50;
 
+    /**
+     *  提醒id为空时的值
+     */
+    public static final int CODE_NULL = -1;
+
 
     public Todo() {
         this.todoID = UUID.randomUUID().toString();
@@ -44,6 +55,7 @@ public class Todo implements Serializable {
         this.priority = this.PROIORITY_LOW;
         this.notice = this.STATE_NOT_NOTICE;
         this.checked = false;
+        this.noticeCode = CODE_NULL;
     }
 
     @NonNull
@@ -116,6 +128,9 @@ public class Todo implements Serializable {
     @NonNull
     @ColumnInfo(name = "tags")
     private List<Tag> tags;
+
+    @ColumnInfo(name = "notice_code")
+    private int noticeCode;
 
     // 排序用字段
     @ColumnInfo(name = "sort_order")
@@ -227,6 +242,14 @@ public class Todo implements Serializable {
 
     public void setTags(@NonNull List<Tag> tags) {
         this.tags = tags;
+    }
+
+    public int getNoticeCode() {
+        return noticeCode;
+    }
+
+    public void setNoticeCode(int noticeCode) {
+        this.noticeCode = noticeCode;
     }
 
     public long getSortOrder() {

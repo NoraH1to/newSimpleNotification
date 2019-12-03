@@ -1,9 +1,11 @@
-package com.norah1to.simplenotification;
+package com.norah1to.simplenotification.View;
 
 import android.os.Bundle;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.preference.PreferenceFragmentCompat;
+
+import com.norah1to.simplenotification.R;
 
 public class SettingsActivity extends BaseActivity {
 

@@ -78,4 +78,7 @@
     <string name="input_hint_change_password_confirm_new_password">确认新密码</string>
     <string name="btn_change_password_change_password">修改密码</string>
 
+    <string name="notification_push_done">推送到通知栏→</string>
+
+    <string name="notification_action_done">完成</string>
 </resources>

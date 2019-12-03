@@ -1,4 +1,4 @@
-package com.norah1to.simplenotification;
+package com.norah1to.simplenotification.View;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.norah1to.simplenotification.Adapter.FinishTodoListAdapter;
+import com.norah1to.simplenotification.R;
 import com.norah1to.simplenotification.ViewModel.FinishTodoViewModel;
 
 public class FinishTodosActivity extends AppCompatActivity {
@@ -46,26 +47,6 @@ public class FinishTodosActivity extends AppCompatActivity {
         mFinishTodoViewModel = ViewModelProviders.of(this).get(FinishTodoViewModel.class);
         mFinishTodoViewModel.getAllTodos().observe(this, todos -> {
             Log.d(TAG, "onCreate: ");
-//            switch (adapter.actionModeState) {
-//                case FinishTodoListAdapter.STATE_ACTION_MODE_OFF:
-//                    if (first) {
-//                        Log.d(TAG, "onCreate: 1");
-//                        adapter.setTodos(todos);
-//                        first = false;
-//                    }
-//                    else if (adapter.getItemCount() < todos.size()){
-//                        Log.d(TAG, "onCreate: 2");
-//                        adapter.addTodo(todos.get(0));
-//                        recyclerView.scrollToPosition(0);
-//                    } else {
-//                        Log.d(TAG, "onCreate: 3");
-//                        adapter.setTodos(todos);
-//                    }
-//                    break;
-//                case FinishTodoListAdapter.STATE_ACTION_MODE_ON:
-//                    adapter.setTodos(todos);
-//                    break;
-//            }
             if (todos.size() == 0) {
                 listBackground.setVisibility(View.VISIBLE);
             } else {

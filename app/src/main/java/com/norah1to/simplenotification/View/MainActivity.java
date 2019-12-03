@@ -1,4 +1,4 @@
-package com.norah1to.simplenotification;
+package com.norah1to.simplenotification.View;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,15 +15,18 @@ import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.norah1to.simplenotification.Adapter.MyItemTouchHelperCallBack;
 import com.norah1to.simplenotification.Adapter.TodoListAdapter;
 import com.norah1to.simplenotification.Entity.User;
 import com.norah1to.simplenotification.Http.HttpHelper;
+import com.norah1to.simplenotification.R;
 import com.norah1to.simplenotification.Settings.SharePreferencesHelper;
 import com.norah1to.simplenotification.ViewModel.TodoViewModel;
 
@@ -60,23 +63,6 @@ public class MainActivity extends BaseActivity {
         // 初始化 todos 的 viewModel，监听 todos，实时更新列表数据
         mtodoViewModel = ViewModelProviders.of(this).get(TodoViewModel.class);
         mtodoViewModel.getAllTodos().observe(this, todos -> {
-//            switch (adapter.actionModeState) {
-//                case TodoListAdapter.STATE_ACTION_MODE_OFF:
-//                    if (first) {
-//                        adapter.setTodos(todos);
-//                        first = false;
-//                    }
-//                    else if (adapter.getItemCount() < todos.size()){
-//                        adapter.addTodo(todos.get(0));
-//                        recyclerView.scrollToPosition(0);
-//                    } else {
-//                        adapter.setTodos(todos);
-//                    }
-//                    break;
-//                case TodoListAdapter.STATE_ACTION_MODE_ON:
-//                    adapter.setTodos(todos);
-//                    break;
-//            }
             Log.d(TAG, "onCreate: updataList" + todos.size());
             if (todos.size() == 0) {
                 listBackground.setVisibility(View.VISIBLE);
@@ -107,6 +93,13 @@ public class MainActivity extends BaseActivity {
                 }
             }
         });
+
+
+        // 初始化 itemTouchHelper
+        ItemTouchHelper.Callback callback = new MyItemTouchHelperCallBack(adapter);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+
 
         // 初始化下部底栏
         bottomAppBar = (BottomAppBar)findViewById(R.id.bottom_bar);
@@ -156,6 +149,12 @@ public class MainActivity extends BaseActivity {
         fab.setOnClickListener(v -> {
             Intent intent = new Intent(this, MakeTodoActivity.class);
             startActivity(intent);
+        });
+        // Todo: 测试
+        fab.setOnLongClickListener(v -> {
+            Intent intent = new Intent(this, NoticeDialogActivity.class);
+            startActivity(intent);
+            return true;
         });
 
 

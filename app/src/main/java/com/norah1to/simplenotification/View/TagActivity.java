@@ -1,4 +1,4 @@
-package com.norah1to.simplenotification;
+package com.norah1to.simplenotification.View;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,6 +14,7 @@ import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.textfield.TextInputEditText;
 import com.norah1to.simplenotification.Entity.Tag;
+import com.norah1to.simplenotification.R;
 import com.norah1to.simplenotification.Util.ChipUtil;
 import com.norah1to.simplenotification.ViewModel.TagViewModel;
 

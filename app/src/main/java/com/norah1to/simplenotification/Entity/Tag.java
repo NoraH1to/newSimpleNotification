@@ -7,11 +7,14 @@ import androidx.room.Entity;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
-@Entity(tableName = "tag_table", indices = {@Index(value = {"name"}, unique = true)})
-public class Tag {
+@Entity(tableName = "tag_table", indices = {
+        @Index(value = {"name"}, unique = true)
+})
+public class Tag implements Serializable {
 
     private static final String STATE_VISIBLE = "1";
     private static final String STATE_NOT_VISIBLE = "0";

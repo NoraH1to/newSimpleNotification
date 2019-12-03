@@ -1,11 +1,10 @@
-package com.norah1to.simplenotification;
+package com.norah1to.simplenotification.View;
 
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -14,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textview.MaterialTextView;
 import com.norah1to.simplenotification.Http.HttpHelper;
+import com.norah1to.simplenotification.R;
 import com.norah1to.simplenotification.Settings.SharePreferencesHelper;
 
 public class UserCenterActivity extends AppCompatActivity {

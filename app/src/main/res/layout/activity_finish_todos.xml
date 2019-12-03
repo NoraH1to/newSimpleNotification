@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FinishTodosActivity">
+    tools:context=".View.FinishTodosActivity">
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/linelayout_finish_todo_list_background"

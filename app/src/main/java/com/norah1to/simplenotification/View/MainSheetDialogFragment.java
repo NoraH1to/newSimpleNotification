@@ -1,4 +1,4 @@
-package com.norah1to.simplenotification;
+package com.norah1to.simplenotification.View;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textview.MaterialTextView;
+import com.norah1to.simplenotification.R;
 import com.norah1to.simplenotification.Settings.SharePreferencesHelper;
 
 public class MainSheetDialogFragment extends BottomSheetDialogFragment {

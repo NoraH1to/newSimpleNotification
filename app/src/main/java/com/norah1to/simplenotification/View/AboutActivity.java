@@ -1,6 +1,8 @@
-package com.norah1to.simplenotification;
+package com.norah1to.simplenotification.View;
 
 import android.os.Bundle;
+
+import com.norah1to.simplenotification.R;
 
 public class AboutActivity extends BaseActivity {
 

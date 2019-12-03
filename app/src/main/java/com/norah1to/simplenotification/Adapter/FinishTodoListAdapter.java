@@ -5,7 +5,6 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Handler;
 import android.text.Spannable;
@@ -25,12 +24,10 @@ import com.google.android.material.radiobutton.MaterialRadioButton;
 import com.google.android.material.textview.MaterialTextView;
 import com.norah1to.simplenotification.Entity.Tag;
 import com.norah1to.simplenotification.Entity.Todo;
-import com.norah1to.simplenotification.MainActivity;
-import com.norah1to.simplenotification.MakeTodoActivity;
+import com.norah1to.simplenotification.View.MainActivity;
 import com.norah1to.simplenotification.R;
 import com.norah1to.simplenotification.Util.DateUtil;
 
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;

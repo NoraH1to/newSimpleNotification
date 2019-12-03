@@ -1,4 +1,4 @@
-package com.norah1to.simplenotification;
+package com.norah1to.simplenotification.View;
 
 import android.content.Context;
 import android.content.SharedPreferences;

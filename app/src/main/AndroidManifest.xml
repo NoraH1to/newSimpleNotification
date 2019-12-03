@@ -13,32 +13,44 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".View.NoticeDialogActivity"></activity>
         <activity
-            android:name=".ChangePasswordActivity"
-            android:windowSoftInputMode="adjustResize"/>
-        <activity android:name=".FinishTodosActivity" />
-        <activity android:name=".UserCenterActivity" />
+            android:name=".View.ChangePasswordActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".View.FinishTodosActivity" />
+        <activity android:name=".View.UserCenterActivity" />
         <activity
-            android:name=".RegisterActivity"
+            android:name=".View.RegisterActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".View.LoginActivity"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".AboutActivity" />
-        <activity android:name=".TagActivity" />
+        <activity android:name=".View.AboutActivity" />
+        <activity android:name=".View.TagActivity" />
         <activity
-            android:name=".MakeTodoActivity"
+            android:name=".View.MakeTodoActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".SettingsActivity"
+            android:name=".View.SettingsActivity"
             android:label="@string/title_activity_settings" />
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".View.MainActivity"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <receiver
+            android:name=".BroadcastReceiver.ActionDoneReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="norah1to.notification.done" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

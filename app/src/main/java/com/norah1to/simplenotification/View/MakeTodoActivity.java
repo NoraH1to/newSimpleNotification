@@ -1,4 +1,4 @@
-package com.norah1to.simplenotification;
+package com.norah1to.simplenotification.View;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
@@ -24,6 +24,11 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textview.MaterialTextView;
 import com.norah1to.simplenotification.Entity.Tag;
 import com.norah1to.simplenotification.Entity.Todo;
+import com.norah1to.simplenotification.Notification.Action;
+import com.norah1to.simplenotification.Notification.ActionCreateImpl;
+import com.norah1to.simplenotification.Notification.ActionMakeAlarm;
+import com.norah1to.simplenotification.Notification.Notification;
+import com.norah1to.simplenotification.R;
 import com.norah1to.simplenotification.Util.ChipUtil;
 import com.norah1to.simplenotification.Util.DateUtil;
 import com.norah1to.simplenotification.ViewModel.MakeTodoViewModel;
@@ -34,6 +39,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 public class MakeTodoActivity extends BaseActivity {
@@ -229,6 +235,10 @@ public class MakeTodoActivity extends BaseActivity {
         if (todo == null) {
             todo = new Todo();
         }
+        if (todo.getNoticeCode() == Todo.CODE_NULL) {
+            todo.setNoticeCode(100000 + new Random().nextInt(899999));
+        }
+        Log.d(TAG, "makeTodo: code: " + todo.getNoticeCode());
         todo.setContent(contentInput.getText().toString());
         todo.setNoticeTimeStamp(makeTodoViewModel.getmData().getValue());
         todo.setModifiedTimeStamp(new Date());
@@ -237,6 +247,12 @@ public class MakeTodoActivity extends BaseActivity {
         if (todo.getCreatedTimeStamp() == null)
             todo.setCreatedTimeStamp(new Date());
         todoViewModel.insertTodo(todo);
+        // Todo: 推送通知 & 创建提醒
+        Notification notification = new Notification(todo);
+        Action action = new ActionCreateImpl();
+        action = new ActionMakeAlarm(action);
+        notification.setMyAction(action);
+        notification.doAction(this);
         finish();
     }
 

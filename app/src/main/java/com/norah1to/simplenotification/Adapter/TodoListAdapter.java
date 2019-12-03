@@ -2,11 +2,9 @@ package com.norah1to.simplenotification.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.BlurMaskFilter;
 import android.graphics.Typeface;
 import android.os.Handler;
 import android.text.Spannable;
-import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.ForegroundColorSpan;
@@ -27,36 +25,51 @@ import com.google.android.material.radiobutton.MaterialRadioButton;
 import com.google.android.material.textview.MaterialTextView;
 import com.norah1to.simplenotification.Entity.Tag;
 import com.norah1to.simplenotification.Entity.Todo;
-import com.norah1to.simplenotification.MainActivity;
-import com.norah1to.simplenotification.MakeTodoActivity;
+import com.norah1to.simplenotification.View.MainActivity;
+import com.norah1to.simplenotification.View.MakeTodoActivity;
+import com.norah1to.simplenotification.Notification.Action;
+import com.norah1to.simplenotification.Notification.ActionCreateImpl;
+import com.norah1to.simplenotification.Notification.ActionMakeNotification;
+import com.norah1to.simplenotification.Notification.Notification;
 import com.norah1to.simplenotification.R;
 import com.norah1to.simplenotification.Util.DateUtil;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoViewHolder> {
+public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoViewHolder> implements ItemTouchMoveListener {
+
+    @Override
+    public void onRightSwipe(Context context, int position) {
+        Notification notification = new Notification(mTodos.get(position));
+        Action action = new ActionCreateImpl();
+        action = new ActionMakeNotification(action);
+        notification.setMyAction(action);
+        notification.doAction(context);
+        notifyItemChanged(position);
+    }
 
     class TodoViewHolder extends  RecyclerView.ViewHolder {
         // 输入的内容
-        private final MaterialTextView contentView;
+        public final MaterialTextView contentView;
         // 日期显示
-        private final MaterialTextView dateView;
+        public final MaterialTextView dateView;
         // 根布局（卡片）
-        private final MaterialCardView cardView;
+        public final MaterialCardView cardView;
         // 提醒图标
-        private final ImageView alarmImgView;
+        public final ImageView alarmImgView;
         // 优先级强调色
-        private final View priorityColorView;
+        public final View priorityColorView;
         // 标签显示
-        private final MaterialTextView tagsView;
+        public final MaterialTextView tagsView;
         // actionMode 选中按钮
-        private final MaterialRadioButton radioButton;
+        public final MaterialRadioButton radioButton;
         // checkbox 完成按钮
-        private final MaterialCheckBox checkBox;
+        public final MaterialCheckBox checkBox;
+        // 颜色
+        public int priorityColor;
 
         private TodoViewHolder (View itemView) {
             super(itemView);
@@ -68,6 +81,7 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoVi
             tagsView = itemView.findViewById(R.id.text_todoitem_tags);
             radioButton = itemView.findViewById(R.id.radio_todoitem);
             checkBox = itemView.findViewById(R.id.checkbox_todoitem);
+            priorityColor = 1;
         }
     }
 
@@ -178,27 +192,23 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoVi
             // 根据优先级切换卡片强调色
             switch (current.getPriority()) {
                 case Todo.PROIORITY_HIGH: // 高优先级
-                    holder.priorityColorView.setBackgroundColor(
-                            ContextCompat.getColor(holder.itemView.getContext(),
-                                    R.color.colorPriorityPink));
+                    holder.priorityColor = ContextCompat.getColor(holder.itemView.getContext(),
+                                    R.color.colorPriorityPink);
                     break;
                 case Todo.PROIORITY_MID: // 中优先级
-                    holder.priorityColorView.setBackgroundColor(
-                            ContextCompat.getColor(holder.itemView.getContext(),
-                                    R.color.colorPriorityOrange));
+                    holder.priorityColor = ContextCompat.getColor(holder.itemView.getContext(),
+                                    R.color.colorPriorityOrange);
                     break;
                 case Todo.PROIORITY_LOW: // 低优先级
-                    holder.priorityColorView.setBackgroundColor(
-                            ContextCompat.getColor(holder.itemView.getContext(),
-                                    R.color.colorPriorityGrey));
+                    holder.priorityColor = ContextCompat.getColor(holder.itemView.getContext(),
+                                    R.color.colorPriorityGrey);
                     break;
                 default: // 默认低优先级样式
-                    holder.priorityColorView.setBackgroundColor(
-                            ContextCompat.getColor(holder.itemView.getContext(),
-                                    R.color.colorPriorityGrey));
+                    holder.priorityColor = ContextCompat.getColor(holder.itemView.getContext(),
+                                    R.color.colorPriorityGrey);
                     break;
             }
-
+            holder.priorityColorView.setBackgroundColor(holder.priorityColor);
 
 
             // 设置提醒图标是否展示
@@ -270,7 +280,7 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoVi
     }
 
 
-    // 往列表中添加一个并且局部刷新（带动画
+    // 往列表中添加一个并且局部刷新
     public void addTodo(Todo todo) {
         if (mTodos != null) {
             // 加到顶部
@@ -321,6 +331,7 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoVi
         this.selectIndexs.clear();
         this.notifyDataSetChanged();
     }
+
 
     // 给外界实现的代理接口
     public interface Proxy {
