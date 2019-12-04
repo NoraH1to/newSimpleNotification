@@ -8,10 +8,11 @@ import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
-import android.util.Log;
+import android.os.Bundle;
 import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
@@ -28,9 +29,13 @@ public class ActionNoticeReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Toast.makeText(context, TAG, Toast.LENGTH_SHORT).show();
         // Todo: fix
-        Todo todo = (Todo) intent.getSerializableExtra(Todo.TAG);
-        if (todo == null) {
-            Log.d(TAG, "onReceive: todo is NULL");
+        // 获得传入Todo
+        Bundle bundle = intent.getBundleExtra("bundle");
+        Todo todo;
+        if (bundle == null) {
+            todo = (Todo) intent.getSerializableExtra(Todo.TAG);
+        } else {
+            todo = (Todo) bundle.getSerializable(Todo.TAG);
         }
         Notification notification;
         NotificationCompat.Builder builder;
@@ -40,6 +45,14 @@ public class ActionNoticeReceiver extends BroadcastReceiver {
 
         NotificationManager notificationManager =
                 (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
+
+        // 设置提示铃声为闹钟音量 // Todo: 蜜汁失效
+        Uri sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+        builder.setLights(0, 0, 0);
+        builder.setOngoing(true);
+        builder.setVibrate(new long[]{1000, 1000});
+        builder.setSound(sound, AudioManager.STREAM_ALARM);
+
 
         /**
          *  安卓O以上申请通知通道
@@ -89,12 +102,6 @@ public class ActionNoticeReceiver extends BroadcastReceiver {
                 true);
 
 
-        // 设置提示铃声为闹钟音量
-        Uri sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-        builder.setDefaults(NotificationCompat.FLAG_INSISTENT);
-        builder.setSound(sound);
-
-
         /**
          *  设置内容
          */
@@ -103,7 +110,7 @@ public class ActionNoticeReceiver extends BroadcastReceiver {
         // 通知标题显示时间
         builder.setContentTitle(DateUtil.formDatestr(todo.getNoticeTimeStamp()));
         // 状态栏小图标
-        builder.setSmallIcon(R.drawable.ic_done_grey_24dp);// todo: 修改图标
+        builder.setSmallIcon(R.drawable.ic_done_grey_24dp);
         // 可见最大
         builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
         // 优先级最高

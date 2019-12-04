@@ -168,7 +168,7 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoVi
                                 "position: " + position +
                                 "todo: " + "\n" + current.toString());
                         Intent intent = new Intent(holder.itemView.getContext(), MakeTodoActivity.class);
-                        // Intent 中传入 TodoID
+                        // Intent 中传入 Todo
                         intent.putExtra(Todo.TAG, current);
                         holder.itemView.getContext().startActivity(intent);
                         break;
