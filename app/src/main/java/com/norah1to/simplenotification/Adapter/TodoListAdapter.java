@@ -169,7 +169,7 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoVi
                                 "todo: " + "\n" + current.toString());
                         Intent intent = new Intent(holder.itemView.getContext(), MakeTodoActivity.class);
                         // Intent 中传入 TodoID
-                        intent.putExtra(Todo.TAG, current.getTodoID());
+                        intent.putExtra(Todo.TAG, current);
                         holder.itemView.getContext().startActivity(intent);
                         break;
                     case STATE_ACTION_MODE_ON:

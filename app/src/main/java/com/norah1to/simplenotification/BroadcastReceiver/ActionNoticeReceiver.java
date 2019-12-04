@@ -1,35 +1,37 @@
-package com.norah1to.simplenotification.Notification;
+package com.norah1to.simplenotification.BroadcastReceiver;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Build;
+import android.util.Log;
+import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 
-import com.norah1to.simplenotification.BroadcastReceiver.ActionDoneReceiver;
 import com.norah1to.simplenotification.Entity.Todo;
 import com.norah1to.simplenotification.R;
 import com.norah1to.simplenotification.Util.DateUtil;
-import com.norah1to.simplenotification.View.MakeTodoActivity;
 
-public class ActionMakeNotification extends ActionCreate {
+public class ActionNoticeReceiver extends BroadcastReceiver {
 
-    Action action;
-
-    public ActionMakeNotification(Action action) {
-        this.action = action;
-    }
+    public static final String TAG = "ActionNoticeReceiver";
 
     @Override
-    public void doAction(Context context, Todo todo, Intent intent) {
-        action.doAction(context, todo, intent);
-        intent.setClass(context, MakeTodoActivity.class);
-
+    public void onReceive(Context context, Intent intent) {
+        Toast.makeText(context, TAG, Toast.LENGTH_SHORT).show();
+        // Todo: fix
+        Todo todo = (Todo) intent.getSerializableExtra(Todo.TAG);
+        if (todo == null) {
+            Log.d(TAG, "onReceive: todo is NULL");
+        }
         Notification notification;
         NotificationCompat.Builder builder;
 
@@ -37,7 +39,7 @@ public class ActionMakeNotification extends ActionCreate {
                 context, todo.getNoticeCode() + "");
 
         NotificationManager notificationManager =
-                        (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
+                (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
 
         /**
          *  安卓O以上申请通知通道
@@ -56,7 +58,7 @@ public class ActionMakeNotification extends ActionCreate {
 
         /**
          *  封装一个通知点击的按钮事件
-          */
+         */
         // 克隆 intent，修改目标
         Intent actionIntent = (Intent) intent.clone();
         actionIntent.setClass(context, ActionDoneReceiver.class);
@@ -77,17 +79,20 @@ public class ActionMakeNotification extends ActionCreate {
         builder.addAction(action);
 
 
-        /**
-         *  封装点击跳转事件
-         */
-        Intent clickIntent = (Intent) intent.clone();
-        clickIntent.setClass(context, MakeTodoActivity.class);
-        // 添加点击事件
-        builder.setContentIntent(
-                PendingIntent.getActivity(context,
+        // 设置持久悬浮提示
+        builder.setFullScreenIntent(
+                PendingIntent.getActivity(
+                        context,
                         todo.getNoticeCode(),
-                        clickIntent,
-                        PendingIntent.FLAG_UPDATE_CURRENT));
+                        new Intent(),
+                        PendingIntent.FLAG_UPDATE_CURRENT),
+                true);
+
+
+        // 设置提示铃声为闹钟音量
+        Uri sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+        builder.setDefaults(NotificationCompat.FLAG_INSISTENT);
+        builder.setSound(sound);
 
 
         /**
@@ -105,12 +110,10 @@ public class ActionMakeNotification extends ActionCreate {
         builder.setPriority(NotificationCompat.PRIORITY_MAX);
         // 时间戳为提醒时间
         builder.setWhen(todo.getNoticeTimeStamp().getTime());
-        // 可以手动划掉
+        // 点击后去掉
         builder.setAutoCancel(true);
 
         notification = builder.build();
-        //        notification.flags = Notification.FLAG_ONGOING_EVENT;
-        notification.flags = NotificationCompat.FLAG_AUTO_CANCEL;
 
 
         /**

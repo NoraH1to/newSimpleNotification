@@ -7,7 +7,7 @@ import com.norah1to.simplenotification.Entity.Todo;
 
 public class Notification {
 
-    public static final String INTENT_KEY_TODO_OBJ = "INTENT_KEY_TODO_OBJ";
+    public static final String CHANNEL_ID = "981122";
 
     private Todo myTodo;
     private Intent myIntent;
@@ -17,13 +17,13 @@ public class Notification {
         myTodo = todo;
         myAction = action;
         myIntent = new Intent();
-        myIntent.putExtra(Notification.INTENT_KEY_TODO_OBJ, todo);
+        myIntent.putExtra(Todo.TAG, todo);
     }
 
     public Notification (Todo todo) {
         myTodo = todo;
         myIntent = new Intent();
-        myIntent.putExtra(Notification.INTENT_KEY_TODO_OBJ, todo);
+        myIntent.putExtra(Todo.TAG, todo);
     }
 
     public void doAction(Context context) {

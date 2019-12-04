@@ -150,12 +150,6 @@ public class MainActivity extends BaseActivity {
             Intent intent = new Intent(this, MakeTodoActivity.class);
             startActivity(intent);
         });
-        // Todo: 测试
-        fab.setOnLongClickListener(v -> {
-            Intent intent = new Intent(this, NoticeDialogActivity.class);
-            startActivity(intent);
-            return true;
-        });
 
 
         // 初始化 swipeReflashLayout

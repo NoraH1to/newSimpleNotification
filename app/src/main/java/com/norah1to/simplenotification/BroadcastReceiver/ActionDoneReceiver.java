@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.norah1to.simplenotification.Entity.Todo;
-import com.norah1to.simplenotification.Notification.Notification;
 import com.norah1to.simplenotification.Repository.TodoRepository;
 
 import java.util.Date;
@@ -19,8 +18,8 @@ public class ActionDoneReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        // 获得传入 todo
-        Todo mTodo = (Todo) intent.getSerializableExtra(Notification.INTENT_KEY_TODO_OBJ);
+        // 获得传入Todo
+        Todo mTodo = (Todo) intent.getSerializableExtra(Todo.TAG);
         // 初始化 repository
         TodoRepository todoRepository = new TodoRepository((Application) context.getApplicationContext());
         // 设置完成并且更新数据库

@@ -169,8 +169,8 @@ public class MakeTodoActivity extends BaseActivity {
 
         // 如果是修改原有的，则根据 id 初始化内容
         Intent todoData = getIntent();
-        if (todoData != null && todoData.getStringExtra(Todo.TAG) != null) {
-            String todoID = todoData.getStringExtra(Todo.TAG);
+        if (todoData != null && todoData.getSerializableExtra(Todo.TAG) != null) {
+            String todoID = ((Todo)todoData.getSerializableExtra(Todo.TAG)).getTodoID();
             new Thread(() -> {
                 makeTodoViewModel.setmTodo(todoID);
             }).start();
@@ -333,7 +333,6 @@ public class MakeTodoActivity extends BaseActivity {
         tmpTodo.setNotice(tmpTodo.getNotice() == Todo.STATE_NOTICE ?
                 Todo.STATE_NOT_NOTICE : Todo.STATE_NOTICE);
         makeTodoViewModel.getmTodo().setValue(tmpTodo);
-        // TODO: 提醒添加、移除的逻辑
     }
 
     // 切换优先级
