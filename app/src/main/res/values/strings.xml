@@ -81,4 +81,12 @@
     <string name="notification_push_done">推送到通知栏→</string>
 
     <string name="notification_action_done">完成</string>
+
+    <string name="text_about_coolapk_title">下载地址：</string>
+    <string name="text_about_coolapk_content">点击跳转</string>
+    <string name="text_about_github_title">GitHub 项目地址：</string>
+    <string name="text_about_github_content">newSimpleNotification</string>
+    <string name="text_about_author_title">作者：</string>
+    <string name="text_about_author_content">\@野良人  @WEGFan</string>
+    <string name="text_about_bottom">Copyright © 2019 NoraH1to</string>
 </resources>
