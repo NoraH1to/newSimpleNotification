@@ -7,8 +7,6 @@ import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-import com.norah1to.simplenotification.Notification.Notification;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,6 +20,8 @@ import java.util.UUID;
 public class Todo implements Serializable {
 
     public static final String TAG = "TODO_OBJ";
+
+    public static final String TODO_ID = "TODO_ID";
 
     /**
      * 删除状态

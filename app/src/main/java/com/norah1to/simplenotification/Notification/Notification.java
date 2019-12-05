@@ -9,6 +9,8 @@ import com.norah1to.simplenotification.Entity.Todo;
 public class Notification {
 
     public static final String CHANNEL_ID = "981122";
+    public static final String TODO_CHANNEL_ID = "Todo";
+    public static final String FOREGROUND_CHANNEL_ID = "TodoForeground";
 
     private Todo myTodo;
     private Intent myIntent;
@@ -20,7 +22,7 @@ public class Notification {
         myAction = action;
         myIntent = new Intent();
         myIntent.putExtra(Todo.TAG, todo);
-        mbundle.putSerializable(Todo.TAG, todo);
+        mbundle.putString(Todo.TAG, todo.getTodoID());
         myIntent.putExtra("bundle", mbundle);
     }
 
@@ -28,7 +30,7 @@ public class Notification {
         myTodo = todo;
         myIntent = new Intent();
         myIntent.putExtra(Todo.TAG, todo);
-        mbundle.putSerializable(Todo.TAG, todo);
+        mbundle.putString(Todo.TAG, todo.getTodoID());
         myIntent.putExtra("bundle", mbundle);
     }
 

@@ -3,6 +3,7 @@ package com.norah1to.simplenotification.Adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.Bundle;
 import android.os.Handler;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
@@ -25,6 +26,9 @@ import com.google.android.material.radiobutton.MaterialRadioButton;
 import com.google.android.material.textview.MaterialTextView;
 import com.norah1to.simplenotification.Entity.Tag;
 import com.norah1to.simplenotification.Entity.Todo;
+import com.norah1to.simplenotification.Notification.ActionCancelImpl;
+import com.norah1to.simplenotification.Notification.ActionRemoveAlarm;
+import com.norah1to.simplenotification.Notification.ActionRemoveNotification;
 import com.norah1to.simplenotification.View.MainActivity;
 import com.norah1to.simplenotification.View.MakeTodoActivity;
 import com.norah1to.simplenotification.Notification.Action;
@@ -155,6 +159,13 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoVi
                         MainActivity.mtodoViewModel.update(current);
                     });
                     thread.start();
+                    // 删除提醒和通知
+                    Notification notification = new Notification(current);
+                    Action action = new ActionCancelImpl();
+                    action = new ActionRemoveAlarm(action);
+                    action = new ActionRemoveNotification(action);
+                    notification.setMyAction(action);
+                    notification.doAction(buttonView.getContext());
                 }
                 buttonView.setChecked(false);
             }));
@@ -168,8 +179,10 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoVi
                                 "position: " + position +
                                 "todo: " + "\n" + current.toString());
                         Intent intent = new Intent(holder.itemView.getContext(), MakeTodoActivity.class);
-                        // Intent 中传入 Todo
+                        Bundle bundle = new Bundle();
                         intent.putExtra(Todo.TAG, current);
+                        bundle.putString(Todo.TAG, current.getTodoID());
+                        intent.putExtra("bundle", bundle);
                         holder.itemView.getContext().startActivity(intent);
                         break;
                     case STATE_ACTION_MODE_ON:

@@ -27,6 +27,7 @@ import com.norah1to.simplenotification.Entity.Todo;
 import com.norah1to.simplenotification.Notification.Action;
 import com.norah1to.simplenotification.Notification.ActionCreateImpl;
 import com.norah1to.simplenotification.Notification.ActionMakeAlarm;
+import com.norah1to.simplenotification.Notification.ActionMakeNotification;
 import com.norah1to.simplenotification.Notification.Notification;
 import com.norah1to.simplenotification.R;
 import com.norah1to.simplenotification.Util.ChipUtil;
@@ -200,7 +201,11 @@ public class MakeTodoActivity extends BaseActivity {
 
         // 监听 fab 点击
         fab.setOnClickListener(v -> {
-            makeTodo();
+            makeTodo(false);
+        });
+        fab.setOnLongClickListener(v -> {
+            makeTodo(true);
+            return true;
         });
 
 
@@ -230,7 +235,7 @@ public class MakeTodoActivity extends BaseActivity {
 
 
     // 创建或者更新一个 todoObj
-    private void makeTodo() {
+    private void makeTodo(boolean notice) {
         Todo todo = makeTodoViewModel.getmTodo().getValue();
         if (todo == null) {
             todo = new Todo();
@@ -251,8 +256,11 @@ public class MakeTodoActivity extends BaseActivity {
         Notification notification = new Notification(todo);
         Action action = new ActionCreateImpl();
         action = new ActionMakeAlarm(action);
+        if (notice) {
+            action = new ActionMakeNotification(action);
+        }
         notification.setMyAction(action);
-        notification.doAction(this);
+        notification.doAction(MakeTodoActivity.this);
         finish();
     }
 

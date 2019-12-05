@@ -1,9 +1,5 @@
 package com.norah1to.simplenotification.Adapter;
 
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Handler;
@@ -18,15 +14,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.radiobutton.MaterialRadioButton;
 import com.google.android.material.textview.MaterialTextView;
 import com.norah1to.simplenotification.Entity.Tag;
 import com.norah1to.simplenotification.Entity.Todo;
-import com.norah1to.simplenotification.View.MainActivity;
+import com.norah1to.simplenotification.Notification.Action;
+import com.norah1to.simplenotification.Notification.ActionCreateImpl;
+import com.norah1to.simplenotification.Notification.ActionMakeAlarm;
+import com.norah1to.simplenotification.Notification.Notification;
 import com.norah1to.simplenotification.R;
 import com.norah1to.simplenotification.Util.DateUtil;
+import com.norah1to.simplenotification.View.MainActivity;
 
 import java.util.HashSet;
 import java.util.List;
@@ -134,6 +138,12 @@ public class FinishTodoListAdapter extends RecyclerView.Adapter<FinishTodoListAd
                         MainActivity.mtodoViewModel.update(current);
                     });
                     thread.start();
+                    // 添加提醒
+                    Notification notification = new Notification(current);
+                    Action action = new ActionCreateImpl();
+                    action = new ActionMakeAlarm(action);
+                    notification.setMyAction(action);
+                    notification.doAction(buttonView.getContext());
                 }
                 buttonView.setChecked(false);
             }));

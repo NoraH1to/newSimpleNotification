@@ -11,7 +11,6 @@ import android.os.Build;
 
 import androidx.core.app.NotificationCompat;
 
-import com.norah1to.simplenotification.BroadcastReceiver.ActionDoneReceiver;
 import com.norah1to.simplenotification.Entity.Todo;
 import com.norah1to.simplenotification.R;
 import com.norah1to.simplenotification.Util.DateUtil;
@@ -28,7 +27,6 @@ public class ActionMakeNotification extends ActionCreate {
     @Override
     public void doAction(Context context, Todo todo, Intent intent) {
         action.doAction(context, todo, intent);
-        intent.setClass(context, MakeTodoActivity.class);
 
         Notification notification;
         NotificationCompat.Builder builder;
@@ -44,13 +42,13 @@ public class ActionMakeNotification extends ActionCreate {
          */
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel notificationChannel = new NotificationChannel(
-                    com.norah1to.simplenotification.Notification.Notification.CHANNEL_ID,
-                    "提醒", NotificationManager.IMPORTANCE_HIGH);
+                    com.norah1to.simplenotification.Notification.Notification.TODO_CHANNEL_ID,
+                    "Todo", NotificationManager.IMPORTANCE_HIGH);
             notificationChannel.setLockscreenVisibility(NotificationCompat.VISIBILITY_PUBLIC);
             notificationChannel.setImportance(NotificationManager.IMPORTANCE_HIGH);
             notificationChannel.setShowBadge(true);
             notificationManager.createNotificationChannel(notificationChannel);
-            builder.setChannelId(com.norah1to.simplenotification.Notification.Notification.CHANNEL_ID);
+            builder.setChannelId(com.norah1to.simplenotification.Notification.Notification.TODO_CHANNEL_ID);
         }
 
 
@@ -59,19 +57,19 @@ public class ActionMakeNotification extends ActionCreate {
           */
         // 克隆 intent，修改目标
         Intent actionIntent = (Intent) intent.clone();
-        actionIntent.setClass(context, ActionDoneReceiver.class);
         actionIntent.setAction("norah1to.notification.done");
         actionIntent.setComponent(
                 new ComponentName("com.norah1to.simplenotification",
                         "com.norah1to.simplenotification.BroadcastReceiver.ActionDoneReceiver"));
+        PendingIntent actionPendingIntent = PendingIntent.getBroadcast(
+                context,
+                todo.getNoticeCode(),
+                actionIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationCompat.Action action = new NotificationCompat.Action(
                 R.drawable.ic_done_grey_24dp,
                 context.getString(R.string.notification_action_done),
-                PendingIntent.getBroadcast(
-                        context,
-                        todo.getNoticeCode(),
-                        actionIntent,
-                        PendingIntent.FLAG_UPDATE_CURRENT)
+                actionPendingIntent
         );
         // 添加 action
         builder.addAction(action);
@@ -82,12 +80,14 @@ public class ActionMakeNotification extends ActionCreate {
          */
         Intent clickIntent = (Intent) intent.clone();
         clickIntent.setClass(context, MakeTodoActivity.class);
+        clickIntent.putExtra(Todo.TAG, todo);
         // 添加点击事件
-        builder.setContentIntent(
-                PendingIntent.getActivity(context,
-                        todo.getNoticeCode(),
-                        clickIntent,
-                        PendingIntent.FLAG_UPDATE_CURRENT));
+        PendingIntent clickPendingIntent = PendingIntent.getActivity(
+                context,
+                todo.getNoticeCode(),
+                clickIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        builder.setContentIntent(clickPendingIntent);
 
 
         /**
