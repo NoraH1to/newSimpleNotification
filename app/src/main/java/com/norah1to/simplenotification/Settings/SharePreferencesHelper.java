@@ -3,6 +3,8 @@ package com.norah1to.simplenotification.Settings;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import androidx.preference.PreferenceManager;
+
 public class SharePreferencesHelper {
 
     public static String KEY_USER = "KEY_USER";
@@ -23,5 +25,11 @@ public class SharePreferencesHelper {
                 KEY_USER, Context.MODE_PRIVATE
         );
         return sharedPreferences.getString(KEY_USER_SESSIONID, null);
+    }
+
+    // 发送通知的通知设置提醒
+    public static Boolean getMakeAlarmWhenNotification(Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getBoolean("makeAlarmWhenNotification", false);
     }
 }

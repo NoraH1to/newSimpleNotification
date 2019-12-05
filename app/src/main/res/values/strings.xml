@@ -86,7 +86,16 @@
     <string name="text_about_coolapk_content">点击跳转</string>
     <string name="text_about_github_title">GitHub 项目地址：</string>
     <string name="text_about_github_content">newSimpleNotification</string>
-    <string name="text_about_author_title">作者：</string>
-    <string name="text_about_author_content">\@野良人  @WEGFan</string>
+    <string name="text_about_author_title">客户端作者：</string>
+    <string name="text_about_author_content">\@野良人</string>
+    <string name="text_about_author2_title">服务端作者：</string>
+    <string name="text_about_author2_content">\@WEGFan</string>
     <string name="text_about_bottom">Copyright © 2019 NoraH1to</string>
+    <string name="address_download_coolapk">https://www.baidu.com</string>
+    <string name="address_github_project">https://github.com/SterbenJ/newSimpleNotification</string>
+    <string name="address_author_norah1to">https://www.coolapk.com/u/494291</string>
+    <string name="address_author_wegfan">https://www.coolapk.com/u/512445</string>
+
+    <string name="setting_head_action">行为</string>
+    <string name="setting_title_make_alarm_when_notification">推送到通知栏的同时创建提醒</string>
 </resources>

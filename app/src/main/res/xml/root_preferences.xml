@@ -18,6 +18,11 @@
 
     <PreferenceCategory app:title="@string/messages_header">
 
+        <SwitchPreferenceCompat
+            app:key="makeAlarmWhenNotification"
+            app:defaultValue="false"
+            app:title="@string/setting_title_make_alarm_when_notification" />
+
         <EditTextPreference
             app:key="signature"
             app:title="@string/signature_title"

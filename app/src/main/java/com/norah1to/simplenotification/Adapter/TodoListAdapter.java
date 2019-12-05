@@ -27,8 +27,10 @@ import com.google.android.material.textview.MaterialTextView;
 import com.norah1to.simplenotification.Entity.Tag;
 import com.norah1to.simplenotification.Entity.Todo;
 import com.norah1to.simplenotification.Notification.ActionCancelImpl;
+import com.norah1to.simplenotification.Notification.ActionMakeAlarm;
 import com.norah1to.simplenotification.Notification.ActionRemoveAlarm;
 import com.norah1to.simplenotification.Notification.ActionRemoveNotification;
+import com.norah1to.simplenotification.Settings.SharePreferencesHelper;
 import com.norah1to.simplenotification.View.MainActivity;
 import com.norah1to.simplenotification.View.MakeTodoActivity;
 import com.norah1to.simplenotification.Notification.Action;
@@ -50,6 +52,9 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoVi
         Notification notification = new Notification(mTodos.get(position));
         Action action = new ActionCreateImpl();
         action = new ActionMakeNotification(action);
+        if (SharePreferencesHelper.getMakeAlarmWhenNotification(context)) {
+            action = new ActionMakeAlarm(action);
+        }
         notification.setMyAction(action);
         notification.doAction(context);
         notifyItemChanged(position);
