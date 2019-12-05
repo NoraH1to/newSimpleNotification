@@ -19,18 +19,12 @@ import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
 import com.norah1to.simplenotification.BroadcastReceiver.ActionDoneReceiver;
+import com.norah1to.simplenotification.BroadcastReceiver.ActionWaitReceiver;
 import com.norah1to.simplenotification.Entity.Todo;
 import com.norah1to.simplenotification.R;
 import com.norah1to.simplenotification.Repository.TodoRepository;
 import com.norah1to.simplenotification.Util.DateUtil;
 
-/**
- * An {@link IntentService} subclass for handling asynchronous task requests in
- * a service on a separate handler thread.
- * <p>
- * TODO: Customize class - update intent actions, extra parameters and static
- * helper methods.
- */
 public class ActionNoticeIntentService extends IntentService {
 
     private static String TAG = "ActionNoticeIntentService";
@@ -129,26 +123,48 @@ public class ActionNoticeIntentService extends IntentService {
 
 
         /**
-         *  封装一个通知点击的按钮事件
+         *  封装一个通知的完成按钮事件
          */
         // 克隆 intent，修改目标
-        Intent actionIntent = (Intent) intent.clone();
-        actionIntent.setClass(this, ActionDoneReceiver.class);
-        actionIntent.setAction("norah1to.notification.done");
-        actionIntent.setComponent(
+        Intent actionDoneIntent = (Intent) intent.clone();
+        actionDoneIntent.setClass(this, ActionDoneReceiver.class);
+        actionDoneIntent.setAction("norah1to.notification.done");
+        actionDoneIntent.setComponent(
                 new ComponentName("com.norah1to.simplenotification",
                         "com.norah1to.simplenotification.BroadcastReceiver.ActionDoneReceiver"));
-        NotificationCompat.Action action = new NotificationCompat.Action(
+        NotificationCompat.Action actionDone = new NotificationCompat.Action(
                 R.drawable.ic_done_grey_24dp,
                 this.getString(R.string.notification_action_done),
                 PendingIntent.getBroadcast(
                         this,
                         realTodo.getNoticeCode(),
-                        actionIntent,
+                        actionDoneIntent,
                         PendingIntent.FLAG_UPDATE_CURRENT)
         );
         // 添加 action
-        builder.addAction(action);
+        builder.addAction(actionDone);
+
+        /**
+         *  封装一个通知的稍后提醒按钮事件
+         */
+        // 克隆 intent，修改目标
+        Intent actionWaitIntent = (Intent) intent.clone();
+        actionWaitIntent.setClass(this, ActionWaitReceiver.class);
+        actionWaitIntent.setAction("norah1to.notification.wait");
+        actionWaitIntent.setComponent(
+                new ComponentName("com.norah1to.simplenotification",
+                        "com.norah1to.simplenotification.BroadcastReceiver.ActionWaitReceiver"));
+        NotificationCompat.Action actionWait = new NotificationCompat.Action(
+                R.drawable.ic_access_alarm_grey_16dp,
+                this.getString(R.string.notification_action_wait),
+                PendingIntent.getBroadcast(
+                        this,
+                        realTodo.getNoticeCode(),
+                        actionWaitIntent,
+                        PendingIntent.FLAG_UPDATE_CURRENT)
+        );
+        // 添加 action
+        builder.addAction(actionWait);
 
 
         // 设置持久悬浮提示

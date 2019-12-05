@@ -30,6 +30,7 @@ import com.norah1to.simplenotification.Notification.ActionMakeAlarm;
 import com.norah1to.simplenotification.Notification.ActionMakeNotification;
 import com.norah1to.simplenotification.Notification.Notification;
 import com.norah1to.simplenotification.R;
+import com.norah1to.simplenotification.Settings.SharePreferencesHelper;
 import com.norah1to.simplenotification.Util.ChipUtil;
 import com.norah1to.simplenotification.Util.DateUtil;
 import com.norah1to.simplenotification.ViewModel.MakeTodoViewModel;
@@ -190,7 +191,12 @@ public class MakeTodoActivity extends BaseActivity {
         if (makeTodoViewModel.getmData().getValue() == null) {
             Calendar c = Calendar.getInstance();
             c.setTime(new Date());
-            c.add(Calendar.DAY_OF_MONTH, 1);
+            if (c.get(Calendar.HOUR_OF_DAY) >
+                    SharePreferencesHelper.getSecondDayStartHour(this)) {
+                c.add(Calendar.DAY_OF_MONTH, 1);
+            }
+            c.set(Calendar.HOUR_OF_DAY, SharePreferencesHelper.getNoticeDateHour(this));
+            c.set(Calendar.MINUTE, SharePreferencesHelper.getNoticeDateMin(this));
             makeTodoViewModel.getmData().setValue(c.getTime());
         }
 

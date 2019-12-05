@@ -28,8 +28,36 @@ public class SharePreferencesHelper {
     }
 
     // 发送通知的通知设置提醒
-    public static Boolean getMakeAlarmWhenNotification(Context context) {
+    public static boolean getMakeAlarmWhenNotification(Context context) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return sharedPreferences.getBoolean("makeAlarmWhenNotification", false);
+        return sharedPreferences.getBoolean("pref_makeAlarmWhenNotification", false);
+    }
+
+    // 通知的默认提醒小时
+    public static int getNoticeDateHour(Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return Integer.parseInt(
+                sharedPreferences.getString("pref_notice_date_hour", "10"));
+    }
+
+    // 通知的默认分钟
+    public static int getNoticeDateMin(Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return Integer.parseInt(
+                sharedPreferences.getString("pref_notice_date_min", "0"));
+    }
+
+    // 第二天开始小时
+    public static int getSecondDayStartHour(Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return Integer.parseInt(
+                sharedPreferences.getString("pref_when_second_day_start_hour", "0"));
+    }
+
+    // 稍后提醒的时长（分钟）
+    public static int getWaitNoticeTimeMin(Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return Integer.parseInt(
+                sharedPreferences.getString("pref_wait_notice_min", "15"));
     }
 }

@@ -31,11 +31,6 @@ public class ActionMakeAlarm extends ActionCreate {
         Intent alarmIntent = (Intent) intent.clone();
 
         // 设置跳转到广播
-//        alarmIntent.setAction("norah1to.notification.notice")
-//                .setComponent(new ComponentName(
-//                        "com.norah1to.simplenotification",
-//                        "com.norah1to.simplenotification.BroadcastReceiver.ActionNoticeReceiver"
-//                        ));
         alarmIntent.setClass(context, ActionNoticeIntentService.class);
         // MIUI 上不知道为啥，只能拿到这个 name 下面的 String 值，我吐了
         alarmIntent.putExtra(Todo.TAG, todo.getTodoID());

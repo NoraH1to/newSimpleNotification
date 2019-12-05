@@ -41,4 +41,8 @@ public class Notification {
     public void setMyAction(Action myAction) {
         this.myAction = myAction;
     }
+
+    public void setMyTodo(Todo myTodo) {
+        this.myTodo = myTodo;
+    }
 }

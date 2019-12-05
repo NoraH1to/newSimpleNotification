@@ -75,6 +75,14 @@
                 <action android:name="norah1to.notification.notice" />
             </intent-filter>
         </receiver>
+        <receiver
+            android:name=".BroadcastReceiver.ActionWaitReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="norah1to.notification.wait" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

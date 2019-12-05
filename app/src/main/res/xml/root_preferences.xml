@@ -16,40 +16,52 @@
 
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <PreferenceCategory app:title="@string/messages_header">
+    <PreferenceCategory app:title="@string/setting_head_action">
 
         <SwitchPreferenceCompat
-            app:key="makeAlarmWhenNotification"
+            app:key="pref_makeAlarmWhenNotification"
             app:defaultValue="false"
-            app:title="@string/setting_title_make_alarm_when_notification" />
+            app:title="@string/setting_content_title_acton_make_alarm_when_notification" />
 
-        <EditTextPreference
-            app:key="signature"
-            app:title="@string/signature_title"
-            app:useSimpleSummaryProvider="true" />
-
-        <ListPreference
-            app:defaultValue="reply"
-            app:entries="@array/reply_entries"
-            app:entryValues="@array/reply_values"
-            app:key="reply"
-            app:title="@string/reply_title"
-            app:useSimpleSummaryProvider="true" />
+        <DropDownPreference
+            app:key="pref_wait_notice_min"
+            app:defaultValue="15"
+            app:title="@string/setting_content_title_action_wait_notice_min"
+            app:entries="@array/notice_wait_mins_display"
+            app:entryValues="@array/notice_wait_mins_values"
+            app:useSimpleSummaryProvider="true"/>
 
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="@string/sync_header">
+    <PreferenceCategory app:title="@string/setting_head_notice_date">
 
-        <SwitchPreferenceCompat
-            app:key="sync"
-            app:title="@string/sync_title" />
+        <DropDownPreference
+            app:key="pref_notice_date_hour"
+            app:title="@string/setting_content_title_notice_date_hour"
+            app:defaultValue="10"
+            app:entries="@array/hours_display"
+            app:entryValues="@array/hours_values"
+            app:useSimpleSummaryProvider="true"/>
 
-        <SwitchPreferenceCompat
-            app:dependency="sync"
-            app:key="attachment"
-            app:summaryOff="@string/attachment_summary_off"
-            app:summaryOn="@string/attachment_summary_on"
-            app:title="@string/attachment_title" />
+        <DropDownPreference
+            app:key="pref_notice_date_min"
+            app:title="@string/setting_content_title_notice_date_min"
+            app:defaultValue="0"
+            app:entries="@array/mins_display"
+            app:entryValues="@array/mins_values"
+            app:useSimpleSummaryProvider="true"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/setting_head_when_start_second_day">
+
+        <DropDownPreference
+            app:key="pref_when_second_day_start_hour"
+            app:title="@string/setting_content_title_start_second_day_hour"
+            app:defaultValue="0"
+            app:entries="@array/second_day_hours_display"
+            app:entryValues="@array/second_day_hours_values"
+            app:useSimpleSummaryProvider="true"/>
 
     </PreferenceCategory>
 

@@ -49,11 +49,19 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoVi
 
     @Override
     public void onRightSwipe(Context context, int position) {
-        Notification notification = new Notification(mTodos.get(position));
+        Todo tmpTodo = mTodos.get(position);
+        Notification notification = new Notification(tmpTodo);
         Action action = new ActionCreateImpl();
         action = new ActionMakeNotification(action);
+        // 当设置为同时开启提醒时
         if (SharePreferencesHelper.getMakeAlarmWhenNotification(context)) {
             action = new ActionMakeAlarm(action);
+            // 更新 Notification 中的Todo
+            tmpTodo.setNotice(Todo.STATE_NOTICE);
+            notification.setMyTodo(tmpTodo);
+            new Thread(() -> {
+                MainActivity.mtodoViewModel.update(tmpTodo);
+            }).start();
         }
         notification.setMyAction(action);
         notification.doAction(context);

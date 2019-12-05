@@ -81,6 +81,7 @@
     <string name="notification_push_done">推送到通知栏→</string>
 
     <string name="notification_action_done">完成</string>
+    <string name="notification_action_wait">稍后提醒</string>
 
     <string name="text_about_coolapk_title">下载地址：</string>
     <string name="text_about_coolapk_content">点击跳转</string>
@@ -91,11 +92,24 @@
     <string name="text_about_author2_title">服务端作者：</string>
     <string name="text_about_author2_content">\@WEGFan</string>
     <string name="text_about_bottom">Copyright © 2019 NoraH1to</string>
-    <string name="address_download_coolapk">https://www.baidu.com</string>
-    <string name="address_github_project">https://github.com/SterbenJ/newSimpleNotification</string>
+    <string name="address_download_coolapk">
+        https://github.com/SterbenJ/newSimpleNotification
+    </string>
+    <string name="address_github_project">
+        https://github.com/SterbenJ/newSimpleNotification
+    </string>
     <string name="address_author_norah1to">https://www.coolapk.com/u/494291</string>
     <string name="address_author_wegfan">https://www.coolapk.com/u/512445</string>
 
     <string name="setting_head_action">行为</string>
-    <string name="setting_title_make_alarm_when_notification">推送到通知栏的同时创建提醒</string>
+    <string name="setting_content_title_acton_make_alarm_when_notification">
+        右滑推送到通知栏的同时创建提醒
+    </string>
+    <string name="setting_content_title_action_wait_notice_min">稍后提醒间隔时间</string>
+    <string name="setting_head_notice_date">默认第二天的提醒时间</string>
+    <string name="setting_content_title_notice_date_hour">小时</string>
+    <string name="setting_content_title_notice_date_min">分钟</string>
+    <string name="setting_head_when_start_second_day">第二天从什么时间开始</string>
+    <string name="setting_content_title_start_second_day_hour">小时</string>
+    <string name="setting_content_title_start_second_day_min">分钟</string>
 </resources>
