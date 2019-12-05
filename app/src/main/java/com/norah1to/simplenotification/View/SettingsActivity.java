@@ -2,7 +2,6 @@ package com.norah1to.simplenotification.View;
 
 import android.os.Bundle;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.preference.Preference;
@@ -39,7 +38,6 @@ public class SettingsActivity extends BaseActivity {
 
         @Override
         public boolean onPreferenceTreeClick(Preference preference) {
-            Toast.makeText(preference.getContext(), preference.getKey(), Toast.LENGTH_SHORT).show();
             return super.onPreferenceTreeClick(preference);
         }
     }

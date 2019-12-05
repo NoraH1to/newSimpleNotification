@@ -23,10 +23,10 @@ public class ActionMakeAlarm extends ActionCreate {
     public void doAction(Context context, Todo todo, Intent intent) {
         action.doAction(context, todo, intent);
 
-        // 小于当前时间的提醒不作处理 // todo: 生产环境删除
-//        if (todo.getNoticeTimeStamp().getTime() <= System.currentTimeMillis()) {
-//            return;
-//        }
+        // 小于当前时间的提醒不作处理 // todo: 开发环境注释掉
+        if (todo.getNoticeTimeStamp().getTime() <= System.currentTimeMillis()) {
+            return;
+        }
         // 克隆 intent
         Intent alarmIntent = (Intent) intent.clone();
 

@@ -5,7 +5,6 @@ import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
 
-import com.norah1to.simplenotification.Dao.TagDao;
 import com.norah1to.simplenotification.Dao.TodoDao;
 import com.norah1to.simplenotification.DataBase.TodoRoomDataBase;
 import com.norah1to.simplenotification.Entity.Todo;
@@ -28,6 +27,11 @@ public class TodoRepository {
 
     public LiveData<List<Todo>> getmAllTodos() {
         return mAllTodos;
+    }
+
+    // 获得所有有提醒未删除的todo
+    public List<Todo> getNoticeTodos() {
+        return mTodoDao.getNoticeTodos();
     }
 
     // 根据 todoID 获得数据

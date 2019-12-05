@@ -122,8 +122,8 @@ public class MainActivity extends BaseActivity {
         // 监听 BottomAppBar 菜单点击
         bottomAppBar.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
-                case R.id.bottom_app_bar_menu_search:
-                    return true;
+//                case R.id.bottom_app_bar_menu_search:
+//                    return true;
                 case R.id.bottom_app_bar_menu_tags:
                     Intent intent1 = new Intent(this, TagActivity.class);
                     startActivity(intent1);

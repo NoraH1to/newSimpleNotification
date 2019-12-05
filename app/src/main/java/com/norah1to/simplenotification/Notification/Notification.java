@@ -34,6 +34,10 @@ public class Notification {
         myIntent.putExtra("bundle", mbundle);
     }
 
+    public Notification() {
+
+    }
+
     public void doAction(Context context) {
         myAction.doAction(context, myTodo, myIntent);
     }
@@ -43,6 +47,17 @@ public class Notification {
     }
 
     public void setMyTodo(Todo myTodo) {
+        if (this.myTodo == null) {
+            this.myTodo = myTodo;
+            initIntent();
+        }
         this.myTodo = myTodo;
+    }
+
+    private void initIntent() {
+        myIntent = new Intent();
+        myIntent.putExtra(Todo.TAG, myTodo);
+        mbundle.putString(Todo.TAG, myTodo.getTodoID());
+        myIntent.putExtra("bundle", mbundle);
     }
 }

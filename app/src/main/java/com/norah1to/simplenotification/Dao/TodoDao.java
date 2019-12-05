@@ -36,6 +36,9 @@ public interface TodoDao {
     @Query("SELECT * FROM todo_table WHERE todo_id=:todoID")
     Todo getTodo(String todoID);
 
+    @Query("SELECT * FROM todo_table WHERE notice != 0 AND deleted != 1")
+    List<Todo> getNoticeTodos();
+
     @Update
     void updateTodo(Todo... todos);
 
